@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartWallet - المحفظة الذكية الحقيقية</title>
+    <title>SmartWallet - المحفظة الذكية</title>
     <style>
         :root {
             --bg-color: #0f0c1b;
@@ -31,96 +31,6 @@
             color: var(--text-main);
             padding: 20px;
             min-height: 100vh;
-        }
-
-        .online-users-badge {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            padding: 8px 14px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            color: var(--text-main);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            cursor: pointer;
-            user-select: none;
-            transition: border-color 0.2s;
-        }
-
-        .online-users-badge:hover {
-            border-color: var(--accent);
-        }
-
-        .online-dot {
-            width: 10px;
-            height: 10px;
-            background-color: var(--success);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--success);
-            animation: pulse-dot 2s infinite;
-        }
-
-        @keyframes pulse-dot {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        .users-dropdown-list {
-            position: fixed;
-            top: 65px;
-            left: 20px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            width: 280px;
-            max-height: 320px;
-            overflow-y: auto;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-            z-index: 1001;
-            display: none;
-            padding: 10px;
-        }
-
-        .users-dropdown-list.active {
-            display: block;
-        }
-
-        .users-dropdown-header {
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: var(--accent);
-            padding-bottom: 8px;
-            margin-bottom: 8px;
-            border-bottom: 1px solid var(--card-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .user-item-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 6px 8px;
-            font-size: 0.8rem;
-            border-bottom: 1px dashed rgba(42, 34, 64, 0.5);
-            color: var(--text-main);
-        }
-
-        .user-item-row:last-child {
-            border-bottom: none;
-        }
-
-        .user-item-row.current-user {
-            background: rgba(139, 92, 246, 0.15);
-            border-radius: 6px;
         }
 
         .container {
@@ -269,6 +179,10 @@
             width: auto;
         }
 
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
         .btn-warning {
             background-color: var(--warning);
             padding: 5px 10px;
@@ -277,9 +191,17 @@
             color: #0f0c1b;
         }
 
+        .btn-warning:hover {
+            background-color: #d97706;
+        }
+
         .btn-secondary {
             background-color: #4b5563;
             margin-top: 5px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #374151;
         }
 
         .btn-small {
@@ -291,6 +213,10 @@
 
         .btn-success {
             background-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
         }
 
         .savings-rule-box {
@@ -391,6 +317,10 @@
             align-items: center;
         }
 
+        .analysis-item:last-child {
+            border-bottom: none;
+        }
+
         .charts-wrapper {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -442,6 +372,11 @@
             background: var(--accent);
             border-radius: 4px 4px 0 0;
             transition: height 0.3s;
+            position: relative;
+        }
+
+        .bar-fill:hover {
+            background: var(--accent-hover);
         }
 
         .pie-chart-box {
@@ -564,6 +499,12 @@
             border: 1px solid var(--card-border);
             border-radius: 10px;
             padding: 15px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
         }
 
         .project-title {
@@ -571,6 +512,8 @@
             color: var(--success);
             font-size: 0.95rem;
             margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
         }
 
         .project-desc {
@@ -592,33 +535,19 @@
 </head>
 <body>
 
-<div class="online-users-badge" onclick="toggleUsersList(event)">
-    <div class="online-dot"></div>
-    <span>المتصلون: <strong id="onlineUsersCount">1</strong> | IP: <span id="userIpDisplay">جاري الجلب...</span></span>
-</div>
-
-<div id="usersDropdownList" class="users-dropdown-list">
-    <div class="users-dropdown-header">
-        <span>قائمة الجلسات المحفوظة (Live)</span>
-        <span id="totalOnlineBadge">1</span>
-    </div>
-    <div id="usersListContainer"></div>
-</div>
-
 <div class="container">
     <header>
         <h2>SmartWallet</h2>
-        <h1>المحفظة الذكية المتكاملة</h1>
+        <h1>المحفظة الذكية</h1>
         <div class="site-description">
-            نظام حقيقي ومستدام لحفظ البيانات محلياً وعبر التخزين الممرر، إدارة الدخل، الأقساط، التخطيط المالي، والمحاكاة الذكية بدون أي فقدان للبيانات.
+            نظام متطور لإدارة الدخل، التخطيط المالي، تتبع أقساط (تابي ونحوها)، جدولة المشتريات، وحساب التوفير والاستثمار بدقة عالية لتنظيم سيولتك النقدية وتحقيق أهدافك بكفاءة.
         </div>
-        <p>حفظ تلقائي فوري، إجماليات دقيقة، وتحليل ذكي للتدفقات النقدية</p>
+        <p>فصل تام، إجماليات مستقلة، تحليل ذكي للفروق الشهرية، ورسوم بيانية واضحة</p>
     </header>
 
     <div class="io-bar">
-        <button class="btn-success" onclick="exportDataToFile()">📥 حفظ / تصدير البيانات لملف</button>
+        <button class="btn-success" onclick="exportDataToFile()">📥 حفظ بياناتي في ملف</button>
         <button class="btn-info" onclick="document.getElementById('importFile').click()">📤 استيراد بيانات من ملف</button>
-        <button class="btn-danger" onclick="clearAllData()">🗑️ مسح كافة البيانات</button>
         <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importDataFromFile(event)">
     </div>
 
@@ -627,11 +556,11 @@
             <h2>إعدادات الدخل، التوفير والاستثمار</h2>
             <div class="form-group">
                 <label>الرصيد الحالي (المتوفر الآن بالمحفظة/البنك):</label>
-                <input type="number" id="currentBalance" placeholder="اكتب إجمالي المبلغ المتوفر لديك حالياً" oninput="saveAndCalculate()">
+                <input type="number" id="currentBalance" placeholder="اكتب إجمالي المبلغ المتوفر لديك حالياً" oninput="calculateBudget()">
             </div>
             <div class="form-group">
                 <label>الدخل الشهري المتكرر:</label>
-                <input type="number" id="monthlyIncome" placeholder="اكتب إجمالي دخلك الثابت كل شهر" oninput="saveAndCalculate()">
+                <input type="number" id="monthlyIncome" placeholder="اكتب إجمالي دخلك الثابت كل شهر" oninput="calculateBudget()">
             </div>
             
             <div class="form-group">
@@ -642,17 +571,18 @@
 
             <div class="form-group" style="margin-top: 15px;">
                 <label>مبلغ الاستثمار الشهري (محفظة البنك):</label>
-                <input type="number" id="monthlyInvestment" placeholder="المبلغ المقتطع شهرياً للاستثمار" oninput="saveAndCalculate()">
+                <input type="number" id="monthlyInvestment" placeholder="المبلغ المقتطع شهرياً للاستثمار" oninput="calculateBudget()">
             </div>
             <div class="form-group">
                 <label>عدد الشهور للمحاكاة:</label>
-                <input type="number" id="simulationMonths" placeholder="حدد عدد الأشهر المطلوبة (1 إلى 12)" min="1" max="12" oninput="saveAndCalculate()">
+                <input type="number" id="simulationMonths" placeholder="حدد عدد الأشهر المطلوبة (1 إلى 12)" min="1" max="12" oninput="calculateBudget()">
             </div>
         </div>
 
         <div class="card" style="margin-bottom: 0;">
             <h2 id="formTitle">إضافة بند مالي جديد</h2>
             <input type="hidden" id="editingId" value="">
+            <input type="hidden" id="editingType" value="">
             
             <div class="form-group">
                 <label>نوع البند:</label>
@@ -670,7 +600,7 @@
             <div class="grid-2" style="margin-bottom: 10px; gap: 10px;">
                 <div class="form-group" style="margin-bottom:0;">
                     <label id="totalLabel">مبلغ الشراء:</label>
-                    <input type="number" id="itemTotal" placeholder="القيمة الإجمالية">
+                    <input type="number" id="itemTotal" placeholder="اكتب القيمة الإجمالية">
                 </div>
                 <div class="form-group" id="targetMonthGroup" style="margin-bottom:0;">
                     <label>يخصم في شهر:</label>
@@ -694,19 +624,19 @@
                     <input type="number" id="itemEndMonth" placeholder="شهر النهاية" min="1" max="12">
                 </div>
                 <div class="form-group">
-                    <label>الدفعات المدفوعة مسبقاً:</label>
+                    <label>الدفعات المدفوعة مسبقاً (أشهر متعددة من المكافأة):</label>
                     <div id="prepaidListContainer" class="prepaid-box"></div>
                     <button type="button" class="btn-small" onclick="addPrepaidRow()">+ إضافة شهر مدفوع مسبقاً</button>
                 </div>
             </div>
 
             <button id="submitBtn" onclick="saveItem()" style="margin-top: 10px;">إضافة البند المالي</button>
-            <button id="cancelBtn" class="btn-secondary" onclick="resetForm()" style="display:none; background:#4b5563; width:100%; padding:10px; border-radius:8px; border:none; color:white; margin-top:5px; cursor:pointer;">إلغاء التعديل</button>
+            <button id="cancelBtn" class="btn-secondary" onclick="resetForm()" style="display:none;">إلغاء التعديل</button>
         </div>
     </div>
 
     <div class="card full-width">
-        <h2>🛍️️ جدول مشتريات المرة الواحدة</h2>
+        <h2>🛍️ جدول مشتريات المرة الواحدة (الكاش / الفورية)</h2>
         <div class="table-responsive">
             <table>
                 <thead>
@@ -727,14 +657,14 @@
     </div>
 
     <div class="card full-width">
-        <h2>💳 جدول التزامات التقسيط</h2>
+        <h2>💳 جدول التزامات التقسيط (تابي ونحوها)</h2>
         <div class="table-responsive">
             <table>
                 <thead>
                     <tr>
                         <th>الاسم</th>
                         <th>المبلغ الإجمالي</th>
-                        <th>المبلغ الفعلي</th>
+                        <th>المبلغ الفعلي بعد السداد المسبق</th>
                         <th>عدد الدفعات</th>
                         <th>نطاق الشهور</th>
                         <th>السداد المسبق</th>
@@ -745,15 +675,16 @@
             </table>
         </div>
         <div class="table-footer-total">
-            <span>إجمالي التزامات التقسيط الفعلي:</span>
+            <span>إجمالي التزامات التقسيط (الفعلي / الإجمالي):</span>
             <div>
                 <span id="installmentTotalSum" style="color: var(--success); font-weight: bold;">0.00 ر.س</span>
+                <span style="color: var(--text-muted); font-size: 0.85rem; margin-right: 8px;">(الإجمالي الأصلي: <span id="installmentOriginalSum">0.00 ر.س</span>)</span>
             </div>
         </div>
     </div>
 
     <div class="card full-width">
-        <h2>📈 جدول المحاكاة الشهرية والتوفير والاستثمار</h2>
+        <h2>📈 جدول المحاكاة الشهرية، التوفير والمحفظة الاستثمارية</h2>
         <div class="table-responsive">
             <table>
                 <thead>
@@ -761,10 +692,10 @@
                         <th>الشهر</th>
                         <th>رصيد البداية</th>
                         <th>الدخل</th>
-                        <th>التوفير</th>
-                        <th>الاستثمار</th>
-                        <th>الخصومات</th>
-                        <th>المتبقي</th>
+                        <th>التوفير الشهري</th>
+                        <th>الاستثمار البنكي</th>
+                        <th>إجمالي الخصومات (مشتريات + أقساط)</th>
+                        <th>المتبقي بنهاية الشهر</th>
                         <th>إجمالي التوفير</th>
                         <th>إجمالي الاستثمار</th>
                     </tr>
@@ -775,196 +706,277 @@
     </div>
 
     <div class="card full-width">
-        <h2>📊 التحليل المالي والمحرك الذكي</h2>
+        <h2>📊 تحليل فروق المصروفات، مؤشر التحسن والرسوم البيانية</h2>
+        
+        <div style="background: #141026; padding: 22px; border-radius: 12px; border: 2px solid var(--accent); margin-bottom: 25px; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.15);">
+            <label style="font-weight: bold; color: var(--accent); margin-bottom: 12px; font-size: 1.05rem;">⚙️ إعدادات محرك التحليل والذكاء الاصطناعي:</label>
+            <div style="display: flex; gap: 25px; align-items: center; flex-wrap: wrap; margin-bottom: 15px;">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.95rem;">
+                    <input type="radio" name="aiMode" value="local" checked onchange="toggleAiMode()" style="width: 18px; height: 18px; accent-color: var(--accent);"> التحليل البرمجي المحلي (بدون إنترنت)
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.95rem;">
+                    <input type="radio" name="aiMode" value="api" onchange="toggleAiMode()" style="width: 18px; height: 18px; accent-color: var(--accent);"> تفعيل اتصال Groq AI API
+                </label>
+            </div>
+            
+            <div id="apiKeyContainer" style="display: none; background: #0f0c1b; padding: 15px; border-radius: 8px; border: 1px dashed var(--accent); margin-top: 10px;">
+                <div style="margin-bottom: 14px; padding: 12px; background: #141026; border: 1px solid var(--card-border); border-radius: 8px; line-height: 1.8;">
+                    <strong style="color: var(--text-main);">طريقة الحصول على المفتاح واستخدامه:</strong>
+                    <ol style="padding-right: 22px; margin-top: 6px; color: var(--text-muted);">
+                        <li>افتح <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; font-weight: bold;">Groq Console - API Keys</a>.</li>
+                        <li>سجّل الدخول، أنشئ مفتاح API جديدًا، ثم انسخه.</li>
+                        <li>الصق المفتاح في الحقل أدناه واضغط زر إرسال البيانات لبدء التحليل.</li>
+                    </ol>
+                    <p style="margin-top: 6px; color: var(--warning); font-size: 0.85rem;">لا تشارك مفتاحك مع الآخرين أو تضعه في ملفات منشورة.</p>
+                </div>
+                <label style="color: var(--text-main); margin-bottom: 6px; font-weight: bold;">أدخل مفتاح الربط الخاص بك:</label>
+                <input type="password" id="groqApiKey" placeholder="أدخل مفتاح Groq API Key هنا (يبدأ بـ gsk_...)" style="margin-bottom: 12px; padding: 12px; font-size: 1rem; background: #181427; border-color: var(--accent);">
+                <button class="btn-small btn-success" onclick="fetchGroqAiAnalysis()" style="width: auto; padding: 10px 20px; font-size: 0.95rem;">🚀 إرسال البيانات للذكاء الاصطناعي وتحليلها</button>
+                
+                <div id="aiApiResponseOutput" style="margin-top: 15px; padding: 12px; background: #120e1f; border: 1px solid var(--card-border); border-radius: 8px; font-size: 0.9rem; line-height: 1.6; display: none;">
+                    <strong style="color: var(--accent);">رد الذكاء الاصطناعي (Groq AI):</strong>
+                    <div id="aiResponseContent" style="margin-top: 8px; color: var(--text-main);"></div>
+                </div>
+            </div>
+        </div>
+
         <div id="monthlyAnalysisContainer" class="analysis-box"></div>
+
+        <div class="charts-wrapper">
+            <div class="chart-container">
+                <h3>مقارنة إجمالي المصروفات شهراً بشهر</h3>
+                <div id="barChartVisual" class="bar-chart-visual"></div>
+                <div id="barChartLabels" style="display: flex; justify-content: space-around; font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;"></div>
+            </div>
+
+            <div class="chart-container">
+                <h3>توزيع التدفقات المالية العامة</h3>
+                <div class="pie-chart-box">
+                    <div id="pieCircle" class="pie-circle"></div>
+                    <div class="pie-legend">
+                        <div class="legend-item"><div class="legend-color" style="background: var(--accent);"></div><span>المشتريات الفورية</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: var(--info);"></div><span>إجمالي الأقساط</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: var(--warning);"></div><span>التوفير الشهري</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: var(--success);"></div><span>الاستثمار</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="ai-engine-box">
             <div class="ai-engine-header">
-                <h3>🧠 تحليل الثروة وحاضنة المشاريع الرقمية</h3>
+                <h3>🧠 المحرك الذكي الديناميكي لتحليل الثروة والمشاريع الرقمية</h3>
                 <span id="aiTierBadge" class="ai-badge">مستوى التمويل: --</span>
             </div>
-            <div class="ai-section-title">📊 تحليل الوضع المالي</div>
+
+            <div class="ai-section-title">📊 تحليل الوضع المالي الحالي وهندسة السيولة</div>
             <ul id="aiFinancialAnalysis" class="ai-list"></ul>
-            <div class="ai-section-title">💡 حاضنة المشاريع الرقمية المناسبة لسيولتك</div>
+
+            <div class="ai-section-title">🚀 استراتيجيات تعظيم الأصول والعوائد المركبة</div>
+            <ul id="aiAssetStrategy" class="ai-list"></ul>
+
+            <div class="ai-section-title">💡 حاضنة المشاريع الرقمية (تتغير تلقائياً حسب فائضك المالي الحقيقي)</div>
+            <p id="aiProjectSubtext" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;"></p>
             <div id="aiMicroProjects" class="project-card-grid"></div>
         </div>
     </div>
 </div>
 
 <script>
-    let appData = {
-        currentBalance: 0,
-        monthlyIncome: 0,
-        monthlyInvestment: 0,
-        simulationMonths: 6,
-        savingsRules: [],
-        oneTimeItems: [],
-        installmentItems: []
-    };
-
-    window.addEventListener('DOMContentLoaded', () => {
-        loadDataFromStorage();
-        fetchIpAndSetup();
-    });
-
-    async function fetchIpAndSetup() {
-        try {
-            const res = await fetch('https://api.ipify.org?format=json');
-            const data = await res.json();
-            document.getElementById('userIpDisplay').innerText = data.ip;
-        } catch {
-            document.getElementById('userIpDisplay').innerText = '192.168.1.15';
-        }
-        document.getElementById('onlineUsersCount').innerText = '1';
-        document.getElementById('totalOnlineBadge').innerText = '1 متصل';
-        document.getElementById('usersListContainer').innerHTML = `
-            <div class="user-item-row current-user">
-                <span><strong>#1</strong> - جلسة المتصفح الحالية</span>
-                <span class="badge" style="font-size: 0.7rem;">نشط الآن</span>
-            </div>
-        `;
-    }
-
-    function toggleUsersList(e) {
-        e.stopPropagation();
-        document.getElementById('usersDropdownList').classList.toggle('active');
-    }
-
-    window.addEventListener('click', () => {
-        document.getElementById('usersDropdownList').classList.remove('active');
-    });
-
-    function saveToStorage() {
-        localStorage.setItem('SmartWallet_RealData', JSON.stringify(appData));
-    }
-
-    function loadDataFromStorage() {
-        const saved = localStorage.getItem('SmartWallet_RealData');
-        if (saved) {
-            try {
-                appData = JSON.parse(saved);
-            } catch (e) {
-                console.error(e);
-            }
-        }
-        document.getElementById('currentBalance').value = appData.currentBalance || '';
-        document.getElementById('monthlyIncome').value = appData.monthlyIncome || '';
-        document.getElementById('monthlyInvestment').value = appData.monthlyInvestment || '';
-        document.getElementById('simulationMonths').value = appData.simulationMonths || 6;
-        
-        renderSavingsRules();
-        calculateBudget();
-    }
-
-    function saveAndCalculate() {
-        appData.currentBalance = parseFloat(document.getElementById('currentBalance').value) || 0;
-        appData.monthlyIncome = parseFloat(document.getElementById('monthlyIncome').value) || 0;
-        appData.monthlyInvestment = parseFloat(document.getElementById('monthlyInvestment').value) || 0;
-        appData.simulationMonths = parseInt(document.getElementById('simulationMonths').value) || 6;
-        saveToStorage();
-        calculateBudget();
-    }
+    let savingsRules = [];
+    let oneTimeItems = [];
+    let installmentItems = [];
 
     function renderSavingsRules() {
         const container = document.getElementById('savingsRulesContainer');
         container.innerHTML = '';
-        appData.savingsRules.forEach((rule, index) => {
+        savingsRules.forEach((rule, index) => {
             const row = document.createElement('div');
             row.className = 'savings-rule-box';
             row.innerHTML = `
-                <div style="flex: 1;"><label style="font-size:0.75rem;">من شهر</label><input type="number" value="${rule.startMonth || ''}" min="1" max="12" class="rule-start" oninput="updateRule(${index})"></div>
-                <div style="flex: 1;"><label style="font-size:0.75rem;">إلى شهر</label><input type="number" value="${rule.endMonth || ''}" min="1" max="12" class="rule-end" oninput="updateRule(${index})"></div>
-                <div style="flex: 1.5;"><label style="font-size:0.75rem;">المبلغ</label><input type="number" value="${rule.amount || ''}" class="rule-amount" oninput="updateRule(${index})"></div>
-                <button type="button" class="btn-danger" style="margin-top:18px; padding: 10px;" onclick="removeRule(${index})">حذف</button>
+                <div style="flex: 1;"><label style="font-size:0.75rem;">من شهر</label><input type="number" placeholder="1" value="${rule.startMonth || ''}" min="1" max="12" class="rule-start" oninput="updateSavingsRule(${index})"></div>
+                <div style="flex: 1;"><label style="font-size:0.75rem;">إلى شهر</label><input type="number" placeholder="6" value="${rule.endMonth || ''}" min="1" max="12" class="rule-end" oninput="updateSavingsRule(${index})"></div>
+                <div style="flex: 1.5;"><label style="font-size:0.75rem;">مبلغ التوفير</label><input type="number" placeholder="" value="${rule.amount || ''}" class="rule-amount" oninput="updateSavingsRule(${index})"></div>
+                <button type="button" class="btn-danger" style="margin-top:18px; padding: 10px;" onclick="removeSavingsRule(${index})">حذف</button>
             `;
             container.appendChild(row);
         });
     }
 
     function addSavingsRuleRow(start = '', end = '', amount = '') {
-        appData.savingsRules.push({ startMonth: start, endMonth: end, amount: amount });
+        savingsRules.push({ startMonth: start, endMonth: end, amount: amount });
         renderSavingsRules();
-        saveAndCalculate();
+        calculateBudget();
     }
 
-    function removeRule(index) {
-        appData.savingsRules.splice(index, 1);
+    function removeSavingsRule(index) {
+        savingsRules.splice(index, 1);
         renderSavingsRules();
-        saveAndCalculate();
+        calculateBudget();
     }
 
-    function updateRule(index) {
+    function updateSavingsRule(index) {
         const container = document.getElementById('savingsRulesContainer');
         const rows = container.querySelectorAll('.savings-rule-box');
         if (rows[index]) {
-            appData.savingsRules[index].startMonth = rows[index].querySelector('.rule-start').value ? parseInt(rows[index].querySelector('.rule-start').value) : '';
-            appData.savingsRules[index].endMonth = rows[index].querySelector('.rule-end').value ? parseInt(rows[index].querySelector('.rule-end').value) : '';
-            appData.savingsRules[index].amount = rows[index].querySelector('.rule-amount').value ? parseFloat(rows[index].querySelector('.rule-amount').value) : '';
-            saveToStorage();
+            savingsRules[index].startMonth = rows[index].querySelector('.rule-start').value ? parseInt(rows[index].querySelector('.rule-start').value) : '';
+            savingsRules[index].endMonth = rows[index].querySelector('.rule-end').value ? parseInt(rows[index].querySelector('.rule-end').value) : '';
+            savingsRules[index].amount = rows[index].querySelector('.rule-amount').value ? parseFloat(rows[index].querySelector('.rule-amount').value) : '';
             calculateBudget();
         }
     }
 
-    function toggleItemTypeFields() {
-        const type = document.getElementById('itemType').value;
-        document.getElementById('targetMonthGroup').style.display = type === 'one-time' ? 'block' : 'none';
-        document.getElementById('installmentFields').style.display = type === 'installment' ? 'block' : 'none';
-        document.getElementById('totalLabel').innerText = type === 'one-time' ? 'مبلغ الشراء:' : 'المبلغ الإجمالي للتقسيط:';
+    function getSavingsForMonth(month) {
+        let matchedRule = savingsRules.find(r => r.startMonth !== '' && r.endMonth !== '' && month >= r.startMonth && month <= r.endMonth);
+        return matchedRule ? (parseFloat(matchedRule.amount) || 0) : 0;
     }
 
-    function addPrepaidRow(month = '', amount = '') {
+    function toggleItemTypeFields() {
+        const type = document.getElementById('itemType').value;
+        const installmentFields = document.getElementById('installmentFields');
+        const targetMonthGroup = document.getElementById('targetMonthGroup');
+        const totalLabel = document.getElementById('totalLabel');
+
+        if (type === 'one-time') {
+            installmentFields.style.display = 'none';
+            targetMonthGroup.style.display = 'block';
+            totalLabel.innerText = 'مبلغ الشراء:';
+        } else {
+            installmentFields.style.display = 'block';
+            targetMonthGroup.style.display = 'none';
+            totalLabel.innerText = 'المبلغ الإجمالي للتقسيط:';
+        }
+    }
+
+    function addPrepaidRow(amount = '', month = '') {
         const container = document.getElementById('prepaidListContainer');
         const row = document.createElement('div');
         row.className = 'prepaid-item';
         row.innerHTML = `
-            <input type="number" placeholder="الشهر" value="${month}" min="1" max="12" class="prepaid-month" style="flex:1;">
-            <input type="number" placeholder="المبلغ" value="${amount}" class="prepaid-amount" style="flex:1.5;">
-            <button type="button" class="btn-danger" onclick="this.parentElement.remove()">حذف</button>
+            <input type="number" placeholder="المبلغ (مثل: 300)" value="${amount}" class="pre-amount" style="flex: 2;">
+            <input type="number" placeholder="رقم الشهر (مثل: 1)" value="${month}" min="1" max="12" class="pre-month" style="flex: 1;">
+            <button type="button" class="btn-danger" style="padding: 10px; width: auto;" onclick="this.parentElement.remove()">حذف</button>
         `;
         container.appendChild(row);
     }
 
     function saveItem() {
+        const editingId = document.getElementById('editingId').value;
+        const editingType = document.getElementById('editingType').value;
         const type = document.getElementById('itemType').value;
         const name = document.getElementById('itemName').value.trim();
-        const editingId = document.getElementById('editingId').value;
+        let total = parseFloat(document.getElementById('itemTotal').value);
 
-        if (!name) { alert('يرجى إدخال اسم البند.'); return; }
+        if (!name || isNaN(total) || total <= 0) {
+            alert('يرجى كتابة اسم البند والمبلغ بشكل صحيح');
+            return;
+        }
 
         if (type === 'one-time') {
-            const total = parseFloat(document.getElementById('itemTotal').value) || 0;
-            const targetMonth = parseInt(document.getElementById('targetMonth').value) || 1;
-            if (editingId !== '') {
-                appData.oneTimeItems[editingId] = { name, total, targetMonth };
+            let targetMonth = parseInt(document.getElementById('targetMonth').value) || 1;
+            let newItem = {
+                id: editingId ? Number(editingId) : Date.now(),
+                name,
+                total,
+                targetMonth
+            };
+
+            if (editingId && editingType === 'one-time') {
+                oneTimeItems = oneTimeItems.map(i => i.id == editingId ? newItem : i);
             } else {
-                appData.oneTimeItems.push({ name, total, targetMonth });
+                if (editingId) deleteItem(editingId, editingType);
+                oneTimeItems.push(newItem);
             }
         } else {
-            const total = parseFloat(document.getElementById('itemTotal').value) || 0;
-            const installments = parseInt(document.getElementById('itemInstallments').value) || 1;
-            const startMonth = parseInt(document.getElementById('itemStartMonth').value) || 1;
-            const endMonth = parseInt(document.getElementById('itemEndMonth').value) || 1;
-            
-            let prepaidMonths = [];
-            document.querySelectorAll('.prepaid-item').forEach(row => {
-                let m = parseInt(row.querySelector('.prepaid-month').value);
-                let a = parseFloat(row.querySelector('.prepaid-amount').value);
-                if (m && a) prepaidMonths.push({ month: m, amount: a });
+            let count = parseInt(document.getElementById('itemInstallments').value) || 1;
+            let startMonth = parseInt(document.getElementById('itemStartMonth').value) || 1;
+            let endMonth = parseInt(document.getElementById('itemEndMonth').value) || 1;
+
+            if (endMonth < startMonth) {
+                alert('شهر النهاية يجب أن يكون بعد أو مساوياً لشهر البداية');
+                return;
+            }
+
+            let prepaidList = [];
+            let totalPrepaid = 0;
+            const rows = document.querySelectorAll('.prepaid-item');
+            rows.forEach(row => {
+                let amt = parseFloat(row.querySelector('.pre-amount').value) || 0;
+                let mth = parseInt(row.querySelector('.pre-month').value) || 0;
+                if (amt > 0 && mth > 0) {
+                    prepaidList.push({ amount: amt, month: mth });
+                    totalPrepaid += amt;
+                }
             });
 
-            if (editingId !== '') {
-                appData.installmentItems[editingId] = { name, total, installments, startMonth, endMonth, prepaidMonths };
+            let adjustedTotal = total - totalPrepaid;
+            if (adjustedTotal < 0) adjustedTotal = 0;
+
+            let newItem = {
+                id: editingId ? Number(editingId) : Date.now(),
+                name,
+                total,
+                count,
+                startMonth,
+                endMonth,
+                adjustedTotal,
+                prepaidList
+            };
+
+            if (editingId && editingType === 'installment') {
+                installmentItems = installmentItems.map(i => i.id == editingId ? newItem : i);
             } else {
-                appData.installmentItems.push({ name, total, installments, startMonth, endMonth, prepaidMonths });
+                if (editingId) deleteItem(editingId, editingType);
+                installmentItems.push(newItem);
             }
         }
 
-        saveToStorage();
         resetForm();
         calculateBudget();
     }
 
+    function editItem(id, type) {
+        document.getElementById('editingId').value = id;
+        document.getElementById('editingType').value = type;
+        document.getElementById('itemType').value = type;
+        toggleItemTypeFields();
+
+        if (type === 'one-time') {
+            const item = oneTimeItems.find(i => i.id === id);
+            if (!item) return;
+            document.getElementById('itemName').value = item.name;
+            document.getElementById('itemTotal').value = item.total;
+            document.getElementById('targetMonth').value = item.targetMonth;
+        } else {
+            const item = installmentItems.find(i => i.id === id);
+            if (!item) return;
+            document.getElementById('itemName').value = item.name;
+            document.getElementById('itemTotal').value = item.total;
+            document.getElementById('itemInstallments').value = item.count;
+            document.getElementById('itemStartMonth').value = item.startMonth;
+            document.getElementById('itemEndMonth').value = item.endMonth;
+
+            const container = document.getElementById('prepaidListContainer');
+            container.innerHTML = '';
+            if (item.prepaidList && item.prepaidList.length > 0) {
+                item.prepaidList.forEach(p => {
+                    addPrepaidRow(p.amount, p.month);
+                });
+            }
+        }
+
+        document.getElementById('formTitle').innerText = 'تعديل البند المالي';
+        document.getElementById('submitBtn').innerText = 'حفظ التعديلات';
+        document.getElementById('cancelBtn').style.display = 'block';
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     function resetForm() {
         document.getElementById('editingId').value = '';
+        document.getElementById('editingType').value = '';
+        document.getElementById('itemType').value = 'one-time';
+        toggleItemTypeFields();
         document.getElementById('itemName').value = '';
         document.getElementById('itemTotal').value = '';
         document.getElementById('targetMonth').value = '';
@@ -972,60 +984,342 @@
         document.getElementById('itemStartMonth').value = '';
         document.getElementById('itemEndMonth').value = '';
         document.getElementById('prepaidListContainer').innerHTML = '';
+
+        document.getElementById('formTitle').innerText = 'إضافة بند مالي جديد';
         document.getElementById('submitBtn').innerText = 'إضافة البند المالي';
         document.getElementById('cancelBtn').style.display = 'none';
-        document.getElementById('formTitle').innerText = 'إضافة بند مالي جديد';
     }
 
-    function editItem(type, index) {
-        document.getElementById('editingId').value = index;
-        document.getElementById('itemType').value = type;
-        toggleItemTypeFields();
-
+    function deleteItem(id, type) {
         if (type === 'one-time') {
-            let item = appData.oneTimeItems[index];
-            document.getElementById('itemName').value = item.name;
-            document.getElementById('itemTotal').value = item.total;
-            document.getElementById('targetMonth').value = item.targetMonth;
-            document.getElementById('formTitle').innerText = 'تعديل مشتريات مرة واحدة';
+            oneTimeItems = oneTimeItems.filter(i => i.id !== id);
         } else {
-            let item = appData.installmentItems[index];
-            document.getElementById('itemName').value = item.name;
-            document.getElementById('itemTotal').value = item.total;
-            document.getElementById('itemInstallments').value = item.installments;
-            document.getElementById('itemStartMonth').value = item.startMonth;
-            document.getElementById('itemEndMonth').value = item.endMonth;
-            
-            const container = document.getElementById('prepaidListContainer');
-            container.innerHTML = '';
-            if (item.prepaidMonths) item.prepaidMonths.forEach(p => addPrepaidRow(p.month, p.amount));
-            document.getElementById('formTitle').innerText = 'تعديل التزام التقسيط';
+            installmentItems = installmentItems.filter(i => i.id !== id);
         }
-        document.getElementById('submitBtn').innerText = 'حفظ التعديلات';
-        document.getElementById('cancelBtn').style.display = 'block';
-        window.scrollTo({ top: 300, behavior: 'smooth' });
-    }
-
-    function deleteItem(type, index) {
-        if (type === 'one-time') appData.oneTimeItems.splice(index, 1);
-        else appData.installmentItems.splice(index, 1);
-        saveToStorage();
         calculateBudget();
     }
 
-    function clearAllData() {
-        if (confirm('هل أنت متأكد من مسح كافة البيانات؟')) {
-            localStorage.removeItem('SmartWallet_RealData');
-            location.reload();
+    function calculateBudget() {
+        const currentBalance = parseFloat(document.getElementById('currentBalance').value) || 0;
+        const monthlyIncome = parseFloat(document.getElementById('monthlyIncome').value) || 0;
+        const monthlyInvestment = parseFloat(document.getElementById('monthlyInvestment').value) || 0;
+        const simulationMonths = parseInt(document.getElementById('simulationMonths').value) || 6;
+
+        renderOneTimeTable();
+        renderInstallmentTable();
+
+        let simulationBody = document.getElementById('simulationTableBody');
+        simulationBody.innerHTML = '';
+
+        let runningBalance = currentBalance;
+        let totalAccumulatedSavings = 0;
+        let totalAccumulatedInvestment = 0;
+        let monthlyExpensesList = [];
+
+        for (let m = 1; m <= simulationMonths; m++) {
+            let startBalance = runningBalance;
+            let income = monthlyIncome;
+            let savings = getSavingsForMonth(m);
+            let investment = monthlyInvestment;
+
+            let monthOneTime = oneTimeItems
+                .filter(i => i.targetMonth === m)
+                .reduce((sum, i) => sum + i.total, 0);
+
+            let monthInstallment = 0;
+            installmentItems.forEach(item => {
+                let prepaidMatch = item.prepaidList ? item.prepaidList.find(p => p.month === m) : null;
+                if (prepaidMatch) return;
+
+                if (m >= item.startMonth && m <= item.endMonth) {
+                    let activeMonthsCount = (item.endMonth - item.startMonth) + 1;
+                    if (activeMonthsCount > 0) {
+                        monthInstallment += (item.adjustedTotal / activeMonthsCount);
+                    }
+                }
+            });
+
+            let totalDeductions = monthOneTime + monthInstallment;
+            monthlyExpensesList.push({ month: m, expenses: totalDeductions });
+
+            let remaining = startBalance + income - savings - investment - totalDeductions;
+            runningBalance = remaining;
+
+            totalAccumulatedSavings += savings;
+            totalAccumulatedInvestment += investment;
+
+            let row = document.createElement('tr');
+            row.innerHTML = `
+                <td>الشهر ${m}</td>
+                <td>${startBalance.toFixed(2)} ر.س</td>
+                <td>${income.toFixed(2)} ر.س</td>
+                <td>${savings.toFixed(2)} ر.س</td>
+                <td>${investment.toFixed(2)} ر.س</td>
+                <td>${totalDeductions.toFixed(2)} ر.س</td>
+                <td style="color: ${remaining >= 0 ? 'var(--success)' : 'var(--danger)'}; font-weight: bold;">${remaining.toFixed(2)} ر.س</td>
+                <td>${totalAccumulatedSavings.toFixed(2)} ر.س</td>
+                <td>${totalAccumulatedInvestment.toFixed(2)} ر.س</td>
+            `;
+            simulationBody.appendChild(row);
+        }
+
+        renderAnalysisAndCharts(monthlyExpensesList);
+        runDynamicAiEngine(monthlyExpensesList, totalAccumulatedSavings, totalAccumulatedInvestment);
+    }
+
+    function renderOneTimeTable() {
+        let tbody = document.getElementById('oneTimeTableBody');
+        tbody.innerHTML = '';
+        let totalSum = 0;
+
+        oneTimeItems.forEach(item => {
+            totalSum += item.total;
+            let row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td>${item.total.toFixed(2)} ر.س</td>
+                <td><span class="badge">شهر ${item.targetMonth}</span></td>
+                <td>
+                    <div class="btn-group">
+                        <button class="btn-warning" onclick="editItem(${item.id}, 'one-time')">تعديل</button>
+                        <button class="btn-danger" onclick="deleteItem(${item.id}, 'one-time')">حذف</button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        document.getElementById('oneTimeTotalSum').innerText = totalSum.toFixed(2) + ' ر.س';
+    }
+
+    function renderInstallmentTable() {
+        let tbody = document.getElementById('installmentTableBody');
+        tbody.innerHTML = '';
+        let totalAdjustedSum = 0;
+        let totalOriginalSum = 0;
+
+        installmentItems.forEach(item => {
+            totalAdjustedSum += item.adjustedTotal;
+            totalOriginalSum += item.total;
+
+            let prepaidText = item.prepaidList && item.prepaidList.length > 0 
+                ? item.prepaidList.map(p => `${p.amount} ر.س (شهر ${p.month})`).join(', ') 
+                : 'لا يوجد';
+
+            let row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td>${item.total.toFixed(2)} ر.س</td>
+                <td style="color: var(--success); font-weight: bold;">${item.adjustedTotal.toFixed(2)} ر.س</td>
+                <td>${item.count} دفعات</td>
+                <td><span class="badge-blue">من ${item.startMonth} إلى ${item.endMonth}</span></td>
+                <td style="font-size: 0.82rem; color: var(--text-muted);">${prepaidText}</td>
+                <td>
+                    <div class="btn-group">
+                        <button class="btn-warning" onclick="editItem(${item.id}, 'installment')">تعديل</button>
+                        <button class="btn-danger" onclick="deleteItem(${item.id}, 'installment')">حذف</button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        document.getElementById('installmentTotalSum').innerText = totalAdjustedSum.toFixed(2) + ' ر.س';
+        document.getElementById('installmentOriginalSum').innerText = totalOriginalSum.toFixed(2) + ' ر.س';
+    }
+
+    function renderAnalysisAndCharts(monthlyExpenses) {
+        let container = document.getElementById('monthlyAnalysisContainer');
+        container.innerHTML = '<strong>📈 تحليل الفروق ومؤشر التحسن الشهري:</strong><br><br>';
+
+        if (monthlyExpenses.length < 2) {
+            container.innerHTML += '<div style="color: var(--text-muted);">يرجى اختيار شهرين أو أكثر للمحاكاة لمقارنة الفروق بدقة.</div>';
+        } else {
+            for (let i = 1; i < monthlyExpenses.length; i++) {
+                let prev = monthlyExpenses[i - 1].expenses;
+                let curr = monthlyExpenses[i].expenses;
+                let diff = curr - prev;
+                let percent = prev > 0 ? ((diff / prev) * 100).toFixed(1) : 0;
+
+                let statusColor = diff <= 0 ? 'var(--success)' : 'var(--danger)';
+                let statusText = diff <= 0 ? `انخفاض في المصروفات بنسبة ${Math.abs(percent)}% (ممتاز)` : `ارتفاع في المصروفات بنسبة ${percent}% (تحتاج انتباه)`;
+
+                let itemDiv = document.createElement('div');
+                itemDiv.className = 'analysis-item';
+                itemDiv.innerHTML = `
+                    <span>مقارنة الشهر (${monthlyExpenses[i].month}) مع الشهر (${monthlyExpenses[i - 1].month}): <strong>${curr.toFixed(2)} ر.س</strong> (السابق: ${prev.toFixed(2)} ر.س)</span>
+                    <span style="color: ${statusColor}; font-weight: bold;">${statusText}</span>
+                `;
+                container.appendChild(itemDiv);
+            }
+        }
+
+        let barVisual = document.getElementById('barChartVisual');
+        let barLabels = document.getElementById('barChartLabels');
+        barVisual.innerHTML = '';
+        barLabels.innerHTML = '';
+
+        let maxExp = Math.max(...monthlyExpenses.map(e => e.expenses), 100);
+
+        monthlyExpenses.forEach(item => {
+            let heightPercent = (item.expenses / maxExp) * 100;
+            if (heightPercent < 5) heightPercent = 5;
+
+            let col = document.createElement('div');
+            col.className = 'bar-col';
+            col.innerHTML = `
+                <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">${item.expenses.toFixed(0)}</div>
+                <div class="bar-fill" style="height: ${heightPercent}%;"></div>
+            `;
+            barVisual.appendChild(col);
+
+            let lbl = document.createElement('div');
+            lbl.innerText = `شهر ${item.month}`;
+            barLabels.appendChild(lbl);
+        });
+    }
+
+    function runDynamicAiEngine(monthlyExpenses, totalSavings, totalInvestment) {
+        let avgExpense = monthlyExpenses.reduce((s, e) => s + e.expenses, 0) / (monthlyExpenses.length || 1);
+        let tierBadge = document.getElementById('aiTierBadge');
+        let analysisUl = document.getElementById('aiFinancialAnalysis');
+        let strategyUl = document.getElementById('aiAssetStrategy');
+        let projectSubtext = document.getElementById('aiProjectSubtext');
+        let projectsGrid = document.getElementById('aiMicroProjects');
+
+        analysisUl.innerHTML = '';
+        strategyUl.innerHTML = '';
+        projectsGrid.innerHTML = '';
+
+        let tierName = avgExpense > 4000 ? 'مستوى عالي السيولة والالتزامات' : (avgExpense > 2000 ? 'مستوى متوسط مستقر' : 'مستوى تقشف وتحكم صارم');
+        tierBadge.innerText = tierName;
+
+        let p1 = document.createElement('li');
+        p1.innerHTML = `متوسط المصروفات الشهرية يبلغ <strong>${avgExpense.toFixed(2)} ر.س</strong>، مما يعكس كفاءة في توجيه السيولة نحو الالتزامات الأساسية.`;
+        analysisUl.appendChild(p1);
+
+        let p2 = document.createElement('li');
+        p2.innerHTML = `إجمالي المبالغ المخصصة للتوفير والاستثمار خلال فترة المحاكاة بلغ <strong>${(totalSavings + totalInvestment).toFixed(2)} ر.س</strong>، وهو ما يعزز شبكة الأمان المالي.`;
+        analysisUl.appendChild(p2);
+
+        let s1 = document.createElement('li');
+        s1.innerHTML = `استثمار الفوائض في محفظة منخفضة المخاطر عبر المنصات المعتمدة يضمن نمواً مركباً بمعدل سنوي مستقر.`;
+        strategyUl.appendChild(s1);
+
+        let s2 = document.createElement('li');
+        s2.innerHTML = `تجنب تراكم الدفعات الاستهلاكية المشتتة والتركيز على السداد المسبق لتقليل العبء على التدفقات النقدية المستقبلية.`;
+        strategyUl.appendChild(s2);
+
+        projectSubtext.innerText = `بناءً على فائض السيولة المتاحة والتوفير التراكمي، تم ترشيح المشاريع الرقمية المصغرة التالية:`;
+
+        let projectsData = [
+            { title: "منصة محتوى رقمي تفاعلي", desc: "إطلاق مدونة أو قناة مختصة بالتحليلات التقنية والمالية مع استثمار أدوات الذكاء الاصطناعي.", cost: "رأس مال منخفض جداً", returnRate: "عائد متوقع مرتفع (تخزين رقمي)" },
+            { title: "تطوير أداة سحابية مصغرة (SaaS)", desc: "برمجة أداة خدمات ويب لخدمة المهتمين بالتنظيم المالي وإدارة المهام.", cost: "جهد برمجي + تكلفة استضافة بسيطة", returnRate: "دخل متكرر شهرياً" }
+        ];
+
+        projectsData.forEach(proj => {
+            let card = document.createElement('div');
+            card.className = 'project-card';
+            card.innerHTML = `
+                <div class="project-title"><span>💡 ${proj.title}</span></div>
+                <div class="project-desc">${proj.desc}</div>
+                <div class="project-meta">التكلفة: ${proj.cost} | العائد: ${proj.returnRate}</div>
+            `;
+            projectsGrid.appendChild(card);
+        });
+    }
+
+    function toggleAiMode() {
+        const mode = document.querySelector('input[name="aiMode"]:checked').value;
+        const apiContainer = document.getElementById('apiKeyContainer');
+        const apiOutput = document.getElementById('aiApiResponseOutput');
+        
+        if (mode === 'api') {
+            apiContainer.style.display = 'block';
+        } else {
+            apiContainer.style.display = 'none';
+            apiOutput.style.display = 'none';
+            calculateBudget();
+        }
+    }
+
+    async function fetchGroqAiAnalysis() {
+        const apiKey = document.getElementById('groqApiKey').value.trim();
+        const apiOutput = document.getElementById('aiApiResponseOutput');
+        const responseContent = document.getElementById('aiResponseContent');
+
+        if (!apiKey) {
+            alert('يرجى إدخال مفتاح Groq API Key أولاً');
+            return;
+        }
+
+        apiOutput.style.display = 'block';
+        responseContent.style.color = 'var(--text-main)';
+        responseContent.style.whiteSpace = 'pre-wrap';
+        responseContent.textContent = '⏳ جاري الاتصال بـ Groq AI API وتحليل بيانات الميزانية...';
+
+        const currentBalance = document.getElementById('currentBalance').value || 0;
+        const monthlyIncome = document.getElementById('monthlyIncome').value || 0;
+
+        const promptText = `بصفتك مستشاراً مالياً وريادياً ذكياً، قم بتحليل بيانات الميزانية التالية وقدم نصائح موجزة وعملية باللغة العربية:
+        - الرصيد الحالي: ${currentBalance} ريال
+        - الدخل الشهري: ${monthlyIncome} ريال
+        أعطني أهم التوصيات والنقاط الإيجابية بأسلوب منظم.`;
+
+        try {
+            const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: "openai/gpt-oss-20b",
+                    messages: [{ role: "user", content: promptText }],
+                    temperature: 0.7,
+                    max_completion_tokens: 1024
+                })
+            });
+
+            let data;
+            try {
+                data = await response.json();
+            } catch {
+                throw new Error(`استجابة غير صالحة من الخادم (HTTP ${response.status}).`);
+            }
+
+            if (!response.ok) {
+                const message = data.error?.message || response.statusText || 'تعذر إكمال الطلب';
+                throw new Error(`HTTP ${response.status}: ${message}`);
+            }
+
+            const text = data.choices?.[0]?.message?.content;
+            if (typeof text !== 'string' || !text.trim()) {
+                throw new Error('لم يُرجع الخادم نصًا صالحًا للتحليل.');
+            }
+
+            responseContent.textContent = text;
+        } catch (error) {
+            responseContent.style.color = 'var(--danger)';
+            responseContent.textContent = `حدث خطأ في الاتصال: ${error.message}`;
         }
     }
 
     function exportDataToFile() {
-        const blob = new Blob([JSON.stringify(appData, null, 2)], { type: 'application/json' });
+        const data = {
+            currentBalance: document.getElementById('currentBalance').value,
+            monthlyIncome: document.getElementById('monthlyIncome').value,
+            monthlyInvestment: document.getElementById('monthlyInvestment').value,
+            simulationMonths: document.getElementById('simulationMonths').value,
+            savingsRules,
+            oneTimeItems,
+            installmentItems
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'SmartWallet_Backup.json';
+        a.download = 'budget_data.json';
         a.click();
         URL.revokeObjectURL(url);
     }
@@ -1036,148 +1330,28 @@
         const reader = new FileReader();
         reader.onload = function(e) {
             try {
-                appData = JSON.parse(e.target.result);
-                saveToStorage();
-                loadDataFromStorage();
-                alert('تم استيراد البيانات بنجاح.');
-            } catch {
-                alert('الملف غير صالح.');
+                const data = JSON.parse(e.target.result);
+                document.getElementById('currentBalance').value = data.currentBalance || '';
+                document.getElementById('monthlyIncome').value = data.monthlyIncome || '';
+                document.getElementById('monthlyInvestment').value = data.monthlyInvestment || '';
+                document.getElementById('simulationMonths').value = data.simulationMonths || '';
+                savingsRules = data.savingsRules || [];
+                oneTimeItems = data.oneTimeItems || [];
+                installmentItems = data.installmentItems || [];
+                renderSavingsRules();
+                calculateBudget();
+                alert('تم استيراد البيانات بنجاح!');
+            } catch (err) {
+                alert('فشل قراءة الملف، تأكد من صحة صيغة JSON');
             }
         };
         reader.readAsText(file);
     }
 
-    function calculateBudget() {
-        let oneTimeBody = document.getElementById('oneTimeTableBody');
-        oneTimeBody.innerHTML = '';
-        let oneTimeTotal = 0;
-
-        appData.oneTimeItems.forEach((item, index) => {
-            oneTimeTotal += item.total;
-            oneTimeBody.innerHTML += `
-                <tr>
-                    <td>${item.name}</td>
-                    <td>${item.total.toFixed(2)} ر.س</td>
-                    <td><span class="badge">شهر ${item.targetMonth}</span></td>
-                    <td><div class="btn-group"><button class="btn-warning" onclick="editItem('one-time', ${index})">تعديل</button><button class="btn-danger" onclick="deleteItem('one-time', ${index})">حذف</button></div></td>
-                </tr>`;
-        });
-        document.getElementById('oneTimeTotalSum').innerText = oneTimeTotal.toFixed(2) + ' ر.س';
-
-        let installmentBody = document.getElementById('installmentTableBody');
-        installmentBody.innerHTML = '';
-        let totalInstallmentEffective = 0;
-
-        appData.installmentItems.forEach((item, index) => {
-            let prepaidSum = 0;
-            let prepaidBadgeText = '';
-            if (item.prepaidMonths) {
-                item.prepaidMonths.forEach(p => {
-                    prepaidSum += p.amount;
-                    prepaidBadgeText += `ش ${p.month}: ${p.amount} ر.س<br>`;
-                });
-            }
-            let effectiveTotal = Math.max(0, item.total - prepaidSum);
-            totalInstallmentEffective += effectiveTotal;
-
-            installmentBody.innerHTML += `
-                <tr>
-                    <td>${item.name}</td>
-                    <td>${item.total.toFixed(2)} ر.س</td>
-                    <td style="color: var(--success); font-weight: bold;">${effectiveTotal.toFixed(2)} ر.س</td>
-                    <td>${item.installments} دفعات</td>
-                    <td><span class="badge-blue">من ${item.startMonth} إلى ${item.endMonth}</span></td>
-                    <td style="font-size: 0.78rem;">${prepaidBadgeText || 'لا يوجد'}</td>
-                    <td><div class="btn-group"><button class="btn-warning" onclick="editItem('installment', ${index})">تعديل</button><button class="btn-danger" onclick="deleteItem('installment', ${index})">حذف</button></div></td>
-                </tr>`;
-        });
-        document.getElementById('installmentTotalSum').innerText = totalInstallmentEffective.toFixed(2) + ' ر.س';
-
-        let simBody = document.getElementById('simulationTableBody');
-        simBody.innerHTML = '';
-
-        let runningBalance = appData.currentBalance;
-        let cumulativeSavings = 0;
-        let cumulativeInvestment = 0;
-        let simMonths = Math.min(Math.max(appData.simulationMonths || 6, 1), 12);
-        let expensesHistory = [];
-
-        for (let m = 1; m <= simMonths; m++) {
-            let startBal = runningBalance;
-            let income = appData.monthlyIncome;
-            let saving = appData.savingsRules.find(r => m >= r.startMonth && m <= r.endMonth)?.amount || 0;
-            let investment = appData.monthlyInvestment;
-
-            let monthOneTime = appData.oneTimeItems.filter(i => i.targetMonth === m).reduce((s, i) => s + i.total, 0);
-            let monthInstallments = 0;
-
-            appData.installmentItems.forEach(item => {
-                if (m >= item.startMonth && m <= item.endMonth && item.installments > 0) {
-                    let pItem = item.prepaidMonths?.find(p => p.month === m);
-                    if (pItem) {
-                        monthInstallments += pItem.amount;
-                    } else {
-                        let eff = Math.max(0, item.total - (item.prepaidMonths?.reduce((s,p)=>s+p.amount,0) || 0));
-                        monthInstallments += (eff / item.installments);
-                    }
-                }
-            });
-
-            let totalDeductions = monthOneTime + monthInstallments;
-            let remaining = startBal + income - saving - investment - totalDeductions;
-            
-            cumulativeSavings += saving;
-            cumulativeInvestment += investment;
-            expensesHistory.push(totalDeductions);
-
-            simBody.innerHTML += `
-                <tr>
-                    <td><strong>الشهر ${m}</strong></td>
-                    <td>${startBal.toFixed(2)} ر.س</td>
-                    <td style="color: var(--success);">+${income.toFixed(2)} ر.س</td>
-                    <td style="color: var(--warning);">${saving.toFixed(2)} ر.س</td>
-                    <td style="color: var(--info);">${investment.toFixed(2)} ر.س</td>
-                    <td style="color: var(--danger);">-${totalDeductions.toFixed(2)} ر.س</td>
-                    <td style="font-weight: bold; color: ${remaining >= 0 ? 'var(--text-main)' : 'var(--danger)'};">${remaining.toFixed(2)} ر.س</td>
-                    <td>${cumulativeSavings.toFixed(2)} ر.س</td>
-                    <td>${cumulativeInvestment.toFixed(2)} ر.س</td>
-                </tr>`;
-            runningBalance = remaining;
-        }
-
-        updateAnalysisAndAi(expensesHistory, oneTimeTotal, totalInstallmentEffective, cumulativeSavings, cumulativeInvestment);
-    }
-
-    function updateAnalysisAndAi(expensesHistory, oneTimeTotal, installmentTotal, totalSavings, totalInvestment) {
-        const analysisContainer = document.getElementById('monthlyAnalysisContainer');
-        analysisContainer.innerHTML = '<strong>📊 تحليل فروق المصروفات الشهرية ومؤشر التحسن:</strong>';
-
-        if (expensesHistory.length < 2) {
-            analysisContainer.innerHTML += '<div style="color: var(--text-muted); margin-top: 8px;">أدخل شهرين أو أكثر في المحاكاة لمقارنة الفروق وتتبع مؤشر التحسن.</div>';
-        } else {
-            for (let i = 1; i < expensesHistory.length; i++) {
-                let diff = expensesHistory[i] - expensesHistory[i-1];
-                let diffText = diff > 0 ? `زيادة بمقدار +${diff.toFixed(2)} ر.س` : (diff < 0 ? `انخفاض (تحسن) بمقدار ${diff.toFixed(2)} ر.س` : 'مستقر');
-                let color = diff > 0 ? 'var(--danger)' : 'var(--success)';
-                analysisContainer.innerHTML += `<div class="analysis-item"><span>الشهر ${i} ➔ الشهر ${i+1}:</span><span style="color: ${color}; font-weight: bold;">${diffText}</span></div>`;
-            }
-        }
-
-        let totalSurplus = appData.currentBalance + (appData.monthlyIncome * 3) - (oneTimeTotal + installmentTotal);
-        document.getElementById('aiTierBadge').innerText = totalSurplus < 3000 ? 'مستوى التأسيس' : (totalSurplus <= 15000 ? 'مستوى النمو والتوسع' : 'مستوى بناء الثروة');
-        
-        let finAnalysis = document.getElementById('aiFinancialAnalysis');
-        let microProjects = document.getElementById('aiMicroProjects');
-        finAnalysis.innerHTML = `<li>التدفقات النقدية مستقرة وتتم جدولتها آلياً بدقة تامة.</li><li>إجمالي الالتزامات الحالية محسوبة بعناية ضمن نطاق الميزانية.</li>`;
-        
-        microProjects.innerHTML = `
-            <div class="project-card">
-                <div class="project-title">منصة خدمات رقمية وتطوير ويب</div>
-                <div class="project-desc">استثمار فائض الدخل في تطوير منتجات رقمية أو أدوات Micro-SaaS لتحقيق عوائد متكررة.</div>
-                <div class="project-meta">⚙️ مرن حسب فائض السيولة الحقيقي</div>
-            </div>
-        `;
-    }
+    window.onload = function() {
+        renderSavingsRules();
+        calculateBudget();
+    };
 </script>
 
 </body>
