@@ -44,31 +44,31 @@
         }
 
         header h2 {
-            font-size: 3.25rem;
+            font-size: 2.8rem;
             color: var(--text-muted);
-            letter-spacing: 1px;
-            margin-bottom: 4px;
-            font-weight: 500;
+            letter-spacing: 1.5px;
+            margin-bottom: 2px;
+            font-weight: 600;
         }
 
         header h1 {
-            font-size: 2.0rem;
+            font-size: 1.6rem;
             color: var(--accent);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-weight: 700;
         }
 
         header .site-description {
             color: var(--text-main);
-            font-size: 1rem;
-            max-width: 800px;
-            margin: 0 auto 10px auto;
+            font-size: 0.95rem;
+            max-width: 850px;
+            margin: 0 auto 8px auto;
             line-height: 1.6;
         }
 
         header p {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .io-bar {
@@ -114,7 +114,7 @@
         }
 
         .card h2 {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             margin-bottom: 15px;
             color: var(--text-main);
             border-bottom: 1px solid var(--card-border);
@@ -541,7 +541,8 @@
         <h1>المحفظة الذكية</h1>
         <div class="site-description">
             نظام مدعوم بذكاءين اصطناعيين (محلي فوري، ومتقدم عبر API للتحليل العميق) لإدارة الدخل، التخطيط المالي، تتبع أقساط (تابي ونحوها)، جدولة المشتريات، وحساب التوفير والاستثمار بدقة عالية لتنظيم سيولتك وتحقيق أهدافك بكفاءة.
-       <p>فصل تام، إجماليات مستقلة، تحليل ذكي بالفروق الشهرية عبر الـ AI، مع رسوم بيانية تفاعلية واضحة</p>
+        </div>
+        <p>فصل تام، إجماليات مستقلة، تحليل متقدم للفروق الشهرية بالذكاء الاصطناعي، مع رسوم بيانية تفاعلية واضحة</p>
     </header>
 
     <div class="io-bar">
@@ -777,6 +778,14 @@
             <div class="ai-section-title">💡 حاضنة المشاريع الرقمية (تتغير تلقائياً حسب فائضك المالي الحقيقي)</div>
             <p id="aiProjectSubtext" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;"></p>
             <div id="aiMicroProjects" class="project-card-grid"></div>
+        </div>
+
+        <!-- DIV الجديد المخصص بالبرومبت المطلوب تحت ai-engine-box -->
+        <div class="card full-width" style="border: 2px solid var(--info); margin-top: 25px;">
+            <h2 style="color: var(--info);">📋 التقرير المالي التحليلي (حسب بيانات النظام)</h2>
+            <div id="customAiPromptAnalysis" style="background: #120e1f; padding: 18px; border-radius: 8px; font-size: 0.92rem; line-height: 1.8; color: var(--text-main);">
+                جاري معالجة وتحليل البيانات المالية...
+            </div>
         </div>
     </div>
 </div>
@@ -1064,6 +1073,7 @@
 
         renderAnalysisAndCharts(monthlyExpensesList);
         runDynamicAiEngine(monthlyExpensesList, totalAccumulatedSavings, totalAccumulatedInvestment);
+        runCustomPromptAiAnalysis(currentBalance, monthlyIncome, monthlyInvestment, totalAccumulatedSavings);
     }
 
     function renderOneTimeTable() {
@@ -1228,6 +1238,57 @@
         });
     }
 
+    // دالة تحليل البرومبت المخصص وتطبيق القواعد حرفياً بدون أي كلام تسويقي
+    function runCustomPromptAiAnalysis(balance, income, investment, savings) {
+        const container = document.getElementById('customAiPromptAnalysis');
+        
+        let totalInstallmentsOriginal = installmentItems.reduce((s, i) => s + i.total, 0);
+        let totalInstallmentsAdjusted = installmentItems.reduce((s, i) => s + i.adjustedTotal, 0);
+        let totalOneTime = oneTimeItems.reduce((s, i) => s + i.total, 0);
+
+        let missingInfo = [];
+        if (balance === 0) missingInfo.push("الرصيد الحالي غير محدد أو يساوي صفر.");
+        if (income === 0) missingInfo.push("الدخل الشهري غير محدد أو يساوي صفر.");
+        if (installmentItems.length === 0 && oneTimeItems.length === 0) missingInfo.push("لا توجد بنود مشتريات أو أقساط مسجلة.");
+
+        let installmentsHtml = installmentItems.length > 0 ? installmentItems.map(i => `
+            - السلعة: ${i.name}<br>
+            - طريقة الدفع: تقسيط (${i.count} دفعات)<br>
+            - القسط الشهري التقريبي: ${(i.adjustedTotal / ((i.endMonth - i.startMonth) + 1 || 1)).toFixed(2)} ر.س<br>
+            - المبلغ المتبقي (الفعلي): ${i.adjustedTotal.toFixed(2)} ر.س<br>
+            - عدد الدفعات: ${i.count} أشهر (من شهر ${i.startMonth} إلى ${i.endMonth})
+        `).join('<br><br>') : "لا توجد التزامات أقساط مسجلة.";
+
+        let oneTimeHtml = oneTimeItems.length > 0 ? oneTimeItems.map(i => `
+            - البند: ${i.name} | المبلغ: ${i.total.toFixed(2)} ر.س | شهر الخصم: ${i.targetMonth}
+        `).join('<br>') : "لا توجد مشتريات فورية مسجلة.";
+
+        container.innerHTML = `
+            <strong>1. ملخص الوضع المالي:</strong><br>
+            - الرصيد الحالي: ${balance.toFixed(2)} ر.س<br>
+            - الدخل الشهري: ${income.toFixed(2)} ر.س<br>
+            - الاستثمارات المسجلة: ${investment.toFixed(2)} ر.س<br>
+            - التوفير المسجل: ${savings.toFixed(2)} ر.س<br><br>
+
+            <strong>2. إجمالي الالتزامات الشهرية:</strong><br>
+            - إجمالي مشتريات المرة الواحدة: ${totalOneTime.toFixed(2)} ر.س<br>
+            - إجمالي التزامات التقسيط (الأصلي / الفعلي): ${totalInstallmentsOriginal.toFixed(2)} ر.س / ${totalInstallmentsAdjusted.toFixed(2)} ر.س<br><br>
+
+            <strong>3. تفاصيل الالتزامات:</strong><br>
+            ${installmentsHtml}<br><br>
+            ${oneTimeHtml}<br><br>
+
+            <strong>4. نقاط القوة:</strong><br>
+            - ${balance > 0 || income > 0 ? "وجود مدخلات مالية نشطة ومتابعة مباشرة للتدفقات." : "لم يتم تسجيل مؤشرات قوة كافية لعدم توفر معطيات كافية."}<br><br>
+
+            <strong>5. المشاكل أو المخاطر:</strong><br>
+            - ${totalInstallmentsAdjusted > income ? "إجمالي الالتزامات يفوق الدخل الشهري." : "مستوى الالتزامات ضمن النطاق المعالج."}<br><br>
+
+            <strong>6. المعلومات الناقصة:</strong><br>
+            - ${missingInfo.length > 0 ? missingInfo.join("<br>- ") : "لا توجد معلومات ناقصة جوهرية بناءً على المدخلات الحالية."}
+        `;
+    }
+
     function toggleAiMode() {
         const mode = document.querySelector('input[name="aiMode"]:checked').value;
         const apiContainer = document.getElementById('apiKeyContainer');
@@ -1260,10 +1321,11 @@
         const currentBalance = document.getElementById('currentBalance').value || 0;
         const monthlyIncome = document.getElementById('monthlyIncome').value || 0;
 
-        const promptText = `بصفتك مستشاراً مالياً وريادياً ذكياً، قم بتحليل بيانات الميزانية التالية وقدم نصائح موجزة وعملية باللغة العربية:
-        - الرصيد الحالي: ${currentBalance} ريال
-        - الدخل الشهري: ${monthlyIncome} ريال
-        أعطني أهم التوصيات والنقاط الإيجابية بأسلوب منظم.`;
+        const promptText = `أنت محلل مالي يعمل على تحليل البيانات المالية للمستخدم.
+مهمتك: حلل البيانات التالية كما هي، ونظمها قبل إصدار أي استنتاج.
+- الرصيد الحالي: ${currentBalance}
+- الدخل الشهري: ${monthlyIncome}
+اعتمد فقط على البيانات الموجودة ولا تخترع أي معلومة ناقصة.`;
 
         try {
             const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -1275,7 +1337,7 @@
                 body: JSON.stringify({
                     model: "openai/gpt-oss-20b",
                     messages: [{ role: "user", content: promptText }],
-                    temperature: 0.7,
+                    temperature: 0.2,
                     max_completion_tokens: 1024
                 })
             });
