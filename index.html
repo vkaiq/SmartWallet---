@@ -735,7 +735,6 @@
                 
                 <label style="color: var(--text-main); margin-bottom: 6px; font-weight: bold;">أدخل مفتاح الربط الخاص بك:</label>
                 <input type="password" id="groqApiKey" placeholder="أدخل مفتاح Groq API Key هنا (يبدأ بـ gsk_...)" style="margin-bottom: 12px; padding: 12px; font-size: 1rem; background: #181427; border-color: var(--accent);">
-                <button type="button" class="btn-small btn-success" onclick="fetchGroqAiAnalysis()" style="width: auto; padding: 10px 20px; font-size: 0.95rem;">🚀 إرسال البيانات للذكاء الاصطناعي وتحليلها</button>
             </div>
         </div>
 
@@ -779,7 +778,7 @@
             <div id="aiMicroProjects" class="project-card-grid"></div>
         </div>
 
-        <!-- التقرير المالي المخصص للنسخ اليدوي (مستقل تماماً) -->
+        <!-- التقرير المالي المخصص للنسخ اليدوي (Card Full-Width مستقل) -->
         <div class="card full-width" style="border: 2px solid var(--info); margin-top: 25px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                 <h2 style="color: var(--info); margin-bottom: 0; border: none; padding: 0;">📋 التقرير المالي التحليلي حسب برومبت SmartWallet</h2>
@@ -795,17 +794,17 @@
             </div>
         </div>
 
-        <!-- زر ومخرجات التحليل الشامل المتقدم عبر Groq AI (مستقلة تماماً وخاصة بـ API) -->
-        <div class="card full-width" style="background: #141026; border: 2px solid var(--accent); padding: 25px; margin-top: 25px;">
-            <div style="text-align: center; margin-bottom: 15px;">
-                <h3 style="color: var(--accent); margin-bottom: 8px; font-size: 1.2rem;">🤖 التحليل الشامل المتقدم لجميع بيانات SmartWallet عبر Groq AI</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">يجمع هذا الزر حالة النظام بالكامل (الرصيد، الدخل، التوفير، الاستثمار، المشتريات، الأقساط، المحاكاة الشهرية، التحليل والفروقات) ويرسلها دفعة واحدة إلى Groq لاستلام نتيجة التحليل المتقدم في المربع أدناه.</p>
+        <!-- بطاقة مستقلة بالكامل (Card Full-Width) لزر ومخرجات التحليل الشامل المتقدم عبر Groq AI -->
+        <div class="card full-width" style="border: 2px solid var(--accent); margin-top: 25px; background: #141026;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                <h2 style="color: var(--accent); margin-bottom: 0; border: none; padding: 0;">🤖 التحليل الشامل المتقدم لجميع بيانات SmartWallet عبر Groq AI</h2>
+                <button type="button" class="btn-small btn-success" onclick="fetchGroqAiAnalysis()" style="width: auto; padding: 8px 18px;">🚀 بدء التحليل المالي الشامل</button>
             </div>
-            <div style="text-align: center; margin-bottom: 20px;">
-                <button type="button" class="btn-success" onclick="fetchGroqAiAnalysis()" style="max-width: 350px; margin: 0 auto; padding: 12px 24px; font-size: 1rem;">🚀 بدء التحليل المالي الشامل الآن</button>
+            
+            <div style="background: #120e1f; padding: 12px 15px; border-radius: 8px; border: 1px dashed var(--accent); margin-bottom: 15px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+                💡 يجمع هذا القسم حالة النظام بالكامل (الرصيد، الدخل، التوفير، الاستثمار، المشتريات، الأقساط، المحاكاة الشهرية، التحليل والفروقات) ويرسلها دفعة واحدة إلى Groq لاستلام نتيجة التحليل المتقدم المباشر هنا.
             </div>
 
-            <!-- مربع مخرجات خاص ومستقل بالكامل لنتيجة Groq API -->
             <div id="aiApiResponseOutput" style="background: #0f0c1b; border: 1px solid var(--card-border); border-radius: 8px; padding: 18px; font-size: 0.92rem; line-height: 1.8; display: none;">
                 <strong style="color: var(--accent); display: block; margin-bottom: 10px;">📊 نتيجة التحليل الفعلي المسترجعة من Groq AI:</strong>
                 <div id="aiResponseContent" style="color: var(--text-main); white-space: pre-wrap;"></div>
