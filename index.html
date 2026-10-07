@@ -719,16 +719,29 @@
                 </label>
             </div>
             
-            <div id="apiKeyContainer" style="display: none; background: #0f0c1b; padding: 15px; border-radius: 8px; border: 1px dashed var(--accent); margin-top: 10px;">
-                <div style="margin-bottom: 14px; padding: 12px; background: #141026; border: 1px solid var(--card-border); border-radius: 8px; line-height: 1.8;">
-                    <strong style="color: var(--text-main);">طريقة الحصول على المفتاح واستخدامه:</strong>
-                    <ol style="padding-right: 22px; margin-top: 6px; color: var(--text-muted);">
-                        <li>افتح <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; font-weight: bold;">Groq Console - API Keys</a>.</li>
-                        <li>سجّل الدخول، أنشئ مفتاح API جديدًا، ثم انسخه.</li>
-                        <li>الصق المفتاح في الحقل أدناه واضغط زر إرسال البيانات لبدء التحليل.</li>
-                    </ol>
-                    <p style="margin-top: 6px; color: var(--warning); font-size: 0.85rem;">لا تشارك مفتاحك مع الآخرين أو تضعه في ملفات منشورة.</p>
-                </div>
+         <div id="apiKeyContainer" style="display: none; background: #0f0c1b; padding: 20px; border-radius: 12px; border: 1px dashed var(--accent); margin-top: 10px;">
+    <div style="margin-bottom: 16px; padding: 15px; background: #141026; border: 1px solid var(--card-border); border-radius: 8px; line-height: 1.9;">
+        <strong style="color: var(--accent); font-size: 1.05rem;">🔑 دليل الحصول على مفتاح Groq API وتفعيله خطوة بخطوة:</strong>
+        <ol style="padding-right: 22px; margin-top: 8px; color: var(--text-main); font-size: 0.92rem;">
+            <li><strong>الوصول إلى منصة المطورين:</strong> انتقل مباشرة إلى الموقع الرسمي عبر الرابط <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; font-weight: bold; text-decoration: underline;">Groq Console - API Keys</a>.</li>
+            <li><strong>تسجيل الدخول أو إنشاء حساب:</strong> قم بتسجيل الدخول باستخدام حسابك (سواء عبر Google أو البريد الإلكتروني) لتتمكن من الوصول إلى لوحة تحكم المفاتيح.</li>
+            <li><strong>توليد المفتاح الجديد:</strong> اضغط على زر <em>(Create API Key)</em> أو إنشاء مفتاح جديد، واكتب له سمية اختيارية (مثل: SmartWalletKey)، ثم قم بنسخ المفتاح الناتج فوراً.</li>
+            <li><strong>اللصق والربط الآمن:</strong> ضع المفتاح المنسوخ في الحقل المخصص أدناه، ثم اضغط على زر <strong>"إرسال البيانات للذكاء الاصطناعي وتحليلها"</strong> لتفعيل التحليل الفوري.</li>
+        </ol>
+        <p style="margin-top: 10px; color: var(--warning); font-size: 0.85rem; background: rgba(245, 158, 11, 0.1); padding: 8px; border-radius: 6px;">
+            ⚠️ <strong>تنبيه أمني هام:</strong> لا تشارك مفتاحك الخاص مع أي شخص، ولا تقم برفعه في مستودعات عامة أو ملفات مكشوفة حمايةً لحسابك وبياناتك.
+        </p>
+    </div>
+    
+    <label style="color: var(--text-main); margin-bottom: 6px; font-weight: bold;">أدخل مفتاح الربط الخاص بك:</label>
+    <input type="password" id="groqApiKey" placeholder="أدخل مفتاح Groq API Key هنا (يبدأ بـ gsk_...)" style="margin-bottom: 12px; padding: 12px; font-size: 1rem; background: #181427; border-color: var(--accent);">
+    <button type="button" class="btn-small btn-success" onclick="fetchGroqAiAnalysis()" style="width: auto; padding: 10px 20px; font-size: 0.95rem;">🚀 إرسال البيانات للذكاء الاصطناعي وتحليلها</button>
+    
+    <div id="aiApiResponseOutput" style="margin-top: 15px; padding: 12px; background: #120e1f; border: 1px solid var(--card-border); border-radius: 8px; font-size: 0.9rem; line-height: 1.6; display: none;">
+        <strong style="color: var(--accent);">رد الذكاء الاصطناعي (Groq AI):</strong>
+        <div id="aiResponseContent" style="margin-top: 8px; color: var(--text-main);"></div>
+    </div>
+</div>
                 <label style="color: var(--text-main); margin-bottom: 6px; font-weight: bold;">أدخل مفتاح الربط الخاص بك:</label>
                 <input type="password" id="groqApiKey" placeholder="أدخل مفتاح Groq API Key هنا (يبدأ بـ gsk_...)" style="margin-bottom: 12px; padding: 12px; font-size: 1rem; background: #181427; border-color: var(--accent);">
                 <button type="button" class="btn-small btn-success" onclick="fetchGroqAiAnalysis()" style="width: auto; padding: 10px 20px; font-size: 0.95rem;">🚀 إرسال البيانات للذكاء الاصطناعي وتحليلها</button>
