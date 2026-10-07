@@ -719,29 +719,20 @@
                 </label>
             </div>
             
-           <div id="apiKeyContainer" style="display: none; background: #0f0c1b; padding: 20px; border-radius: 12px; border: 1px dashed var(--accent); margin-top: 10px;">
-    <div style="margin-bottom: 16px; padding: 15px; background: #141026; border: 1px solid var(--card-border); border-radius: 8px; line-height: 1.9;">
-        <strong style="color: var(--accent); font-size: 1.05rem;">🔑 دليل الحصول على مفتاح Groq API وتفعيله خطوة بخطوة:</strong>
-        <ol style="padding-right: 22px; margin-top: 8px; color: var(--text-main); font-size: 0.92rem;">
-            <li><strong>الوصول إلى منصة المطورين:</strong> انتقل مباشرة إلى الموقع الرسمي عبر الرابط <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; font-weight: bold; text-decoration: underline;">Groq Console - API Keys</a>.</li>
-            <li><strong>تسجيل الدخول أو إنشاء حساب:</strong> قم بتسجيل الدخول باستخدام حسابك (سواء عبر Google أو البريد الإلكتروني) لتتمكن من الوصول إلى لوحة تحكم المفاتيح.</li>
-            <li><strong>توليد المفتاح الجديد:</strong> اضغط على زر <em>(Create API Key)</em> أو إنشاء مفتاح جديد، واكتب له سمية اختيارية (مثل: SmartWalletKey)، ثم قم بنسخ المفتاح الناتج فوراً.</li>
-            <li><strong>اللصق والربط الآمن:</strong> ضع المفتاح المنسوخ في الحقل المخصص أدناه، ثم اضغط على زر <strong>"إرسال البيانات للذكاء الاصطناعي وتحليلها"</strong> لتفعيل التحليل الفوري.</li>
-        </ol>
-        <p style="margin-top: 10px; color: var(--warning); font-size: 0.85rem; background: rgba(245, 158, 11, 0.1); padding: 8px; border-radius: 6px;">
-            ⚠️ <strong>تنبيه أمني هام:</strong> لا تشارك مفتاحك الخاص مع أي شخص، ولا تقم برفعه في مستودعات عامة أو ملفات مكشوفة حمايةً لحسابك وبياناتك.
-        </p>
-    </div>
-    
-    <label style="color: var(--text-main); margin-bottom: 6px; font-weight: bold;">أدخل مفتاح الربط الخاص بك:</label>
-    <input type="password" id="groqApiKey" placeholder="أدخل مفتاح Groq API Key هنا (يبدأ بـ gsk_...)" style="margin-bottom: 12px; padding: 12px; font-size: 1rem; background: #181427; border-color: var(--accent);">
-    <button type="button" class="btn-small btn-success" onclick="fetchGroqAiAnalysis()" style="width: auto; padding: 10px 20px; font-size: 0.95rem;">🚀 إرسال البيانات للذكاء الاصطناعي وتحليلها</button>
-    
-    <div id="aiApiResponseOutput" style="margin-top: 15px; padding: 12px; background: #120e1f; border: 1px solid var(--card-border); border-radius: 8px; font-size: 0.9rem; line-height: 1.6; display: none;">
-        <strong style="color: var(--accent);">رد الذكاء الاصطناعي (Groq AI):</strong>
-        <div id="aiResponseContent" style="margin-top: 8px; color: var(--text-main);"></div>
-    </div>
-</div>
+            <div id="apiKeyContainer" style="display: none; background: #0f0c1b; padding: 20px; border-radius: 12px; border: 1px dashed var(--accent); margin-top: 10px;">
+                <div style="margin-bottom: 16px; padding: 15px; background: #141026; border: 1px solid var(--card-border); border-radius: 8px; line-height: 1.9;">
+                    <strong style="color: var(--accent); font-size: 1.05rem;">🔑 دليل الحصول على مفتاح Groq API وتفعيله خطوة بخطوة:</strong>
+                    <ol style="padding-right: 22px; margin-top: 8px; color: var(--text-main); font-size: 0.92rem;">
+                        <li><strong>الوصول إلى منصة المطورين:</strong> انتقل مباشرة إلى الموقع الرسمي عبر الرابط <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; font-weight: bold; text-decoration: underline;">Groq Console - API Keys</a>.</li>
+                        <li><strong>تسجيل الدخول أو إنشاء حساب:</strong> قم بتسجيل الدخول باستخدام حسابك (سواء عبر Google أو البريد الإلكتروني) لتتمكن من الوصول إلى لوحة تحكم المفاتيح.</li>
+                        <li><strong>توليد المفتاح الجديد:</strong> اضغط على زر <em>(Create API Key)</em> أو إنشاء مفتاح جديد، واكتب له سمية اختيارية (مثل: SmartWalletKey)، ثم قم بنسخ المفتاح الناتج فوراً.</li>
+                        <li><strong>اللصق والربط الآمن:</strong> ضع المفتاح المنسوخ في الحقل المخصص أدناه، ثم اضغط على زر <strong>"إرسال البيانات للذكاء الاصطناعي وتحليلها"</strong> لتفعيل التحليل الفوري.</li>
+                    </ol>
+                    <p style="margin-top: 10px; color: var(--warning); font-size: 0.85rem; background: rgba(245, 158, 11, 0.1); padding: 8px; border-radius: 6px;">
+                        ⚠️ <strong>تنبيه أمني هام:</strong> لا تشارك مفتاحك الخاص مع أي شخص، ولا تقم برفعه في مستودعات عامة أو ملفات مكشوفة حمايةً لحسابك وبياناتك.
+                    </p>
+                </div>
+                
                 <label style="color: var(--text-main); margin-bottom: 6px; font-weight: bold;">أدخل مفتاح الربط الخاص بك:</label>
                 <input type="password" id="groqApiKey" placeholder="أدخل مفتاح Groq API Key هنا (يبدأ بـ gsk_...)" style="margin-bottom: 12px; padding: 12px; font-size: 1rem; background: #181427; border-color: var(--accent);">
                 <button type="button" class="btn-small btn-success" onclick="fetchGroqAiAnalysis()" style="width: auto; padding: 10px 20px; font-size: 0.95rem;">🚀 إرسال البيانات للذكاء الاصطناعي وتحليلها</button>
@@ -808,6 +799,13 @@
             <div id="customAiPromptAnalysis" style="background: #120e1f; padding: 18px; border-radius: 8px; font-size: 0.92rem; line-height: 1.8; color: var(--text-main);">
                 جاري معالجة وتحليل البيانات المالية...
             </div>
+        </div>
+
+        <!-- زر تحليل النظام الشامل عبر Groq في أسفل الصفحة -->
+        <div class="card full-width" style="background: #141026; border: 2px solid var(--accent); text-align: center; padding: 25px; margin-top: 25px;">
+            <h3 style="color: var(--accent); margin-bottom: 10px; font-size: 1.2rem;">🤖 التحليل الشامل المتقدم لجميع بيانات SmartWallet عبر Groq AI</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">يجمع هذا الزر حالة النظام بالكامل (الرصيد، الدخل، التوفير، الاستثمار، المشتريات، الأقساط، المحاكاة الشهرية، التحليل والفروقات) ويرسلها دفعة واحدة إلى Groq للتحليل العميق والتوصيات.</p>
+            <button type="button" class="btn-success" onclick="fetchGroqAiAnalysis()" style="max-width: 350px; margin: 0 auto; padding: 12px 24px; font-size: 1rem;">🚀 بدء التحليل المالي الشامل الآن</button>
         </div>
     </div>
 </div>
@@ -1394,22 +1392,98 @@
         const apiOutput = document.getElementById('aiApiResponseOutput');
         const responseContent = document.getElementById('aiResponseContent');
 
-        if (!apiKey) {
-            alert('يرجى إدخال مفتاح Groq API Key أولاً');
+        // الشرط الأساسي: التحقق من تفعيل وضع API وإدخال المفتاح
+        const apiModeChecked = document.querySelector('input[name="aiMode"][value="api"]').checked;
+        if (!apiModeChecked || !apiKey) {
+            alert('⚠️ تنبيه هام: يجب أولاً تفعيل خيار "تفعيل اتصال Groq AI API" وإدخال مفتاح API صالح في قسم الإعدادات أعلاه لإتمام هذا التحليل المتقدم.');
+            document.querySelector('input[name="aiMode"][value="api"]').checked = true;
+            toggleAiMode();
+            document.getElementById('groqApiKey').focus();
             return;
         }
 
         apiOutput.style.display = 'block';
         responseContent.style.color = 'var(--text-main)';
         responseContent.style.whiteSpace = 'pre-wrap';
-        responseContent.textContent = '⏳ جاري الاتصال بـ Groq AI API وتحليل بيانات الميزانية...';
+        responseContent.textContent = '⏳ جاري جمع بيانات SmartWallet وإرسالها إلى Groq AI لتحليلها بشكل شامل...';
 
-        const currentBalance = document.getElementById('currentBalance').value || 0;
-        const monthlyIncome = document.getElementById('monthlyIncome').value || 0;
+        // جمع كافة بيانات النظام الحالية ديناميكياً وقت الضغط على الزر
+        const currentBalance = parseFloat(document.getElementById('currentBalance').value) || 0;
+        const monthlyIncome = parseFloat(document.getElementById('monthlyIncome').value) || 0;
+        const monthlyInvestment = parseFloat(document.getElementById('monthlyInvestment').value) || 0;
+        const simulationMonths = parseInt(document.getElementById('simulationMonths').value) || 6;
 
-        const promptText = `أنت محلل مالي ذكي ومحايد. قم بتحليل البيانات التالية بدقة ودون أي افتراضات أو كلام تحفيزي:
-        - الرصيد الحالي: ${currentBalance}
-        - الدخل الشهري: ${monthlyIncome}`;
+        let savingsRulesData = savingsRules.map(r => `من شهر ${r.startMonth} إلى شهر ${r.endMonth}: توفير بمبلغ ${r.amount} ر.س`).join(', ') || 'لا توجد قواعد توفير محددة.';
+        let oneTimeData = oneTimeItems.map(i => `- ${i.name}: ${i.total} ر.س (يخصم في شهر ${i.targetMonth})`).join('\n') || 'لا توجد مشتريات فورية.';
+        let installmentData = installmentItems.map(i => `- ${i.name}: الإجمالي ${i.total} ر.س، الفعلي بعد السداد المسبق ${i.adjustedTotal} ر.س، من شهر ${i.startMonth} إلى ${i.endMonth}`).join('\n') || 'لا توجد التزامات أقساط.';
+
+        // إعادة توليد صفوف المحاكاة الحالية لإرسالها
+        let runningBalance = currentBalance;
+        let simRows = [];
+        let totalAccSavings = 0;
+        let totalAccInv = 0;
+        let monthlyExpList = [];
+
+        for (let m = 1; m <= simulationMonths; m++) {
+            let startB = runningBalance;
+            let inc = monthlyIncome;
+            let sav = getSavingsForMonth(m);
+            let inv = monthlyInvestment;
+            let mOneTime = oneTimeItems.filter(i => i.targetMonth === m).reduce((s, i) => s + i.total, 0);
+            let mInst = 0;
+            installmentItems.forEach(item => {
+                let pMatch = item.prepaidList ? item.prepaidList.find(p => p.month === m) : null;
+                if (!pMatch && m >= item.startMonth && m <= item.endMonth) {
+                    let cnt = (item.endMonth - item.startMonth) + 1;
+                    if (cnt > 0) mInst += (item.adjustedTotal / cnt);
+                }
+            });
+            let ded = mOneTime + mInst;
+            monthlyExpList.push(ded);
+            let rem = startB + inc - sav - inv - ded;
+            runningBalance = rem;
+            totalAccSavings += sav;
+            totalAccInv += inv;
+
+            simRows.push(`الشهر ${m}: رصيد البداية=${startB.toFixed(2)}، الدخل=${inc.toFixed(2)}، التوفير=${sav.toFixed(2)}، الاستثمار=${inv.toFixed(2)}، الخصومات=${ded.toFixed(2)}، المتبقي=${rem.toFixed(2)}، إجمالي التوفير=${totalAccSavings.toFixed(2)}، إجمالي الاستثمار=${totalAccInv.toFixed(2)}`);
+        }
+
+        // بناء الطلب: أولاً جميع بيانات SmartWallet، ثم في الأسفل البرومبت الكامل وتعليمات التحليل
+        const smartWalletDataPayload = `
+[جميع بيانات SmartWallet الحالية للمستخدم]:
+1. الرصيد الحالي والسيولة الحالية: ${currentBalance.toFixed(2)} ر.س
+2. الدخل الشهري: ${monthlyIncome.divider ? '' : monthlyIncome.toFixed(2)} ر.س
+3. الاستثمار الشهري: ${monthlyInvestment.toFixed(2)} ر.س
+4. قواعد التوفير: ${savingsRulesData}
+5. مشتريات المرة الواحدة:
+${oneTimeData}
+6. التزامات التقسيط:
+${installmentData}
+7. جدول المحاكاة الشهرية (${simulationMonths} أشهر):
+${simRows.join('\n')}
+8. إجمالي التوفير التراكمي: ${totalAccSavings.toFixed(2)} ر.س | إجمالي الاستثمار التراكمي: ${totalAccInv.toFixed(2)} ر.س
+        `.trim();
+
+        const analysisInstructionsPrompt = `
+[البرومبت الكامل وتعليمات التحليل]:
+أنت محلل مالي ذكي ومحايد، ومهمتك تحليل البيانات المالية التي يوفرها نظام SmartWallet بدقة، اعتمادًا على البيانات الموجودة فقط.
+لا تفترض أي معلومات غير موجودة، ولا تخترع أرقامًا أو مصاريف أو التزامات. إذا كانت هناك بيانات ناقصة أو متعارضة، وضّح ذلك بوضوح قبل بناء أي استنتاج عليها.
+يجب عليك تحليل جميع البيانات المرفقة أعلاه وربطها ببعضها (الدخل + المصروفات + السيولة + التوفير + الاستثمار + المشتريات + الأقساط + المحاكاة الشهرية + الفروقات الشهرية + الرصيد المتوقع).
+
+يجب أن تتضمن النتيجة النهائية تحليلاً شاملاً يغطي:
+- ملخص الوضع المالي الحالي ومستوى السيولة.
+- تحليل التدفق النقدي شهرًا بشهر (الأشهر الأعلى ضغطًا ماليًا والأشهر الأفضل).
+- إجمالي الالتزامات مع التفريق بين الإجمالي والقسط الشهري وتأثير الأقساط على الأشهر القادمة.
+- تأثير مشتريات المرة الواحدة.
+- تأثير التوفير والاستثمار على السيولة المتاحة.
+- اتجاه المصروفات وهل الوضع يتحسن أم يتراجع.
+- نقاط القوة والمشكلات أو المخاطر المالية الظاهرة من البيانات.
+- توصيات عملية ومبنية حصرياً على الأرقام الفعلية، مرتبة حسب الأولوية.
+- مشاريع رقمية مصغرة مقترحة فقط إذا كان الوضع المالي والفائض يسمحان بذلك دون افتراضات.
+الهدف الأساسي: إعطاء تحليل مالي دقيق مبني على بيانات SmartWallet الفعلية، مع فهم التسلسل الزمني للسيولة والالتزامات، وليس مجرد جمع الأرقام وإصدار حكم عام.
+        `.trim();
+
+        const finalPromptForGroq = `${smartWalletDataPayload}\n\n${analysisInstructionsPrompt}`;
 
         try {
             const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -1420,9 +1494,9 @@
                 },
                 body: JSON.stringify({
                     model: "openai/gpt-oss-20b",
-                    messages: [{ role: "user", content: promptText }],
+                    messages: [{ role: "user", content: finalPromptForGroq }],
                     temperature: 0.2,
-                    max_completion_tokens: 1024
+                    max_completion_tokens: 1536
                 })
             });
 
