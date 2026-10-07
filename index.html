@@ -780,9 +780,18 @@
             <div id="aiMicroProjects" class="project-card-grid"></div>
         </div>
 
-        <!-- DIV الجديد المخصص بالبرومبت المطلوب تحت ai-engine-box -->
+        <!-- التقرير المالي مع زر النسخ والتوضيح -->
         <div class="card full-width" style="border: 2px solid var(--info); margin-top: 25px;">
-            <h2 style="color: var(--info);">📋 التقرير المالي التحليلي (حسب بيانات النظام)</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                <h2 style="color: var(--info); margin-bottom: 0; border: none; padding: 0;">📋 التقرير المالي التحليلي المخصص للذكاء الاصطناعي</h2>
+                <button class="btn-small btn-success" onclick="copyAnalysisPrompt()" style="width: auto; padding: 8px 18px;">📋 نسخ البرومفت مع البيانات</button>
+            </div>
+            
+            <div style="background: #120e1f; padding: 12px 15px; border-radius: 8px; border: 1px dashed var(--info); margin-bottom: 15px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+                💡 <strong>ماذا تفعل بعد النسخ؟</strong> 
+                يمكنك أخذ هذا البرومفت الجاهز (مع بياناتك المالية الحالية) ولصقه في أي نموذج ذكاء اصطناعي (مثل ChatGPT أو Claude أو غيره)، لتستمر في دراسة وتحليل وضعك المالي وتطوير خطتك بعمق وبشكل تفاعلي.
+            </div>
+
             <div id="customAiPromptAnalysis" style="background: #120e1f; padding: 18px; border-radius: 8px; font-size: 0.92rem; line-height: 1.8; color: var(--text-main);">
                 جاري معالجة وتحليل البيانات المالية...
             </div>
@@ -1238,7 +1247,6 @@
         });
     }
 
-    // دالة تحليل البرومبت المخصص وتطبيق القواعد حرفياً بدون أي كلام تسويقي
     function runCustomPromptAiAnalysis(balance, income, investment, savings) {
         const container = document.getElementById('customAiPromptAnalysis');
         
@@ -1264,29 +1272,45 @@
         `).join('<br>') : "لا توجد مشتريات فورية مسجلة.";
 
         container.innerHTML = `
-            <strong>1. ملخص الوضع المالي:</strong><br>
+            <strong>أنت محلل مالي يعمل على تحليل البيانات المالية للمستخدم.</strong><br><br>
+            <strong>مهمتك:</strong><br>
+            حلل البيانات التالية كما هي، ونظمها قبل إصدار أي استنتاج.<br><br>
+            <strong>بيانات المستخدم:</strong><br>
             - الرصيد الحالي: ${balance.toFixed(2)} ر.س<br>
             - الدخل الشهري: ${income.toFixed(2)} ر.س<br>
-            - الاستثمارات المسجلة: ${investment.toFixed(2)} ر.س<br>
-            - التوفير المسجل: ${savings.toFixed(2)} ر.س<br><br>
-
-            <strong>2. إجمالي الالتزامات الشهرية:</strong><br>
-            - إجمالي مشتريات المرة الواحدة: ${totalOneTime.toFixed(2)} ر.س<br>
-            - إجمالي التزامات التقسيط (الأصلي / الفعلي): ${totalInstallmentsOriginal.toFixed(2)} ر.س / ${totalInstallmentsAdjusted.toFixed(2)} ر.س<br><br>
-
-            <strong>3. تفاصيل الالتزامات:</strong><br>
-            ${installmentsHtml}<br><br>
+            - الاستثمارات: ${investment.toFixed(2)} ر.س<br>
+            - التوفير: ${savings.toFixed(2)} ر.س<br><br>
+            <strong>الالتزامات الشهرية:</strong><br>
+            ${installmentsHtml}<br>
             ${oneTimeHtml}<br><br>
-
-            <strong>4. نقاط القوة:</strong><br>
-            - ${balance > 0 || income > 0 ? "وجود مدخلات مالية نشطة ومتابعة مباشرة للتدفقات." : "لم يتم تسجيل مؤشرات قوة كافية لعدم توفر معطيات كافية."}<br><br>
-
-            <strong>5. المشاكل أو المخاطر:</strong><br>
-            - ${totalInstallmentsAdjusted > income ? "إجمالي الالتزامات يفوق الدخل الشهري." : "مستوى الالتزامات ضمن النطاق المعالج."}<br><br>
-
-            <strong>6. المعلومات الناقصة:</strong><br>
-            - ${missingInfo.length > 0 ? missingInfo.join("<br>- ") : "لا توجد معلومات ناقصة جوهرية بناءً على المدخلات الحالية."}
+            <strong>إجمالي الالتزامات:</strong> ${totalInstallmentsAdjusted.toFixed(2)} ر.س<br><br>
+            <strong>قواعد التحليل:</strong><br>
+            1. اعتمد فقط على البيانات الموجودة.<br>
+            2. لا تخترع أي معلومة ناقصة.<br>
+            3. إذا كانت هناك معلومة مهمة غير موجودة، حددها بوضوح (${missingInfo.join(', ') || 'لا توجد'}).<br>
+            4. افصل بين الأرقام الفعلية والاستنتاجات.<br>
+            5. احسب النسب والفروقات عندما تكون البيانات كافية.<br>
+            6. حلل الالتزامات الشهرية وتأثيرها على السيولة.<br>
+            7. لا تقدم اقتراحات مبنية على افتراضات.<br>
+            8. لا تستخدم كلامًا تسويقيًا أو تحفيزيًا.<br>
+            9. إذا وجدت خطأ أو تناقضًا في البيانات، وضحه بدل تجاهله.<br>
+            10. اجعل النتيجة مختصرة ومنظمة وسهلة القراءة.<br><br>
+            <strong>المطلوب:</strong><br>
+            - ملخص الوضع المالي.<br>
+            - إجمالي الالتزامات الشهرية.<br>
+            - تأثير الأقساط والمشتريات على الدخل.<br>
+            - نقاط القوة والمشاكل أو المخاطر.<br>
+            - المعلومات الناقصة والاستنتاجات المباشرة.
         `;
+    }
+
+    function copyAnalysisPrompt() {
+        const promptText = document.getElementById('customAiPromptAnalysis').innerText;
+        navigator.clipboard.writeText(promptText).then(() => {
+            alert('✅ تم نسخ البرومبت والبيانات المالية بنجاح! يمكنك الآن لصقها في أي ذكاء اصطناعي (مثل ChatGPT) لمتابعة الدراسة والتحليل.');
+        }).catch(err => {
+            alert('فشل نسخ النص، يرجى المحاولة يدوياً.');
+        });
     }
 
     function toggleAiMode() {
