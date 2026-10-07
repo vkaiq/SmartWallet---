@@ -780,16 +780,16 @@
             <div id="aiMicroProjects" class="project-card-grid"></div>
         </div>
 
-        <!-- التقرير المالي مع زر النسخ والتوضيح -->
+        <!-- التقرير المالي المحدث بالبرومبت الجديد -->
         <div class="card full-width" style="border: 2px solid var(--info); margin-top: 25px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
-                <h2 style="color: var(--info); margin-bottom: 0; border: none; padding: 0;">📋 التقرير المالي التحليلي المخصص للذكاء الاصطناعي</h2>
-                <button class="btn-small btn-success" onclick="copyAnalysisPrompt()" style="width: auto; padding: 8px 18px;">📋 نسخ البرومفت مع البيانات</button>
+                <h2 style="color: var(--info); margin-bottom: 0; border: none; padding: 0;">📋 التقرير المالي التحليلي حسب برومبت SmartWallet</h2>
+                <button class="btn-small btn-success" onclick="copyAnalysisPrompt()" style="width: auto; padding: 8px 18px;">📋 نسخ البرومبت مع البيانات</button>
             </div>
             
             <div style="background: #120e1f; padding: 12px 15px; border-radius: 8px; border: 1px dashed var(--info); margin-bottom: 15px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
                 💡 <strong>ماذا تفعل بعد النسخ؟</strong> 
-                يمكنك أخذ هذا البرومفت الجاهز (مع بياناتك المالية الحالية) ولصقه في أي نموذج ذكاء اصطناعي (مثل ChatGPT أو Claude أو غيره)، لتستمر في دراسة وتحليل وضعك المالي وتطوير خطتك بعمق وبشكل تفاعلي.
+                خذ هذا البرومبت الجاهز مع بياناتك الحالية وضعه في أي ذكاء اصطناعي (مثل ChatGPT) لتكمل دراسة وضعك المالي بدقة وحيادية تامة.
             </div>
 
             <div id="customAiPromptAnalysis" style="background: #120e1f; padding: 18px; border-radius: 8px; font-size: 0.92rem; line-height: 1.8; color: var(--text-main);">
@@ -1032,6 +1032,7 @@
         let totalAccumulatedSavings = 0;
         let totalAccumulatedInvestment = 0;
         let monthlyExpensesList = [];
+        let simulationRowsData = [];
 
         for (let m = 1; m <= simulationMonths; m++) {
             let startBalance = runningBalance;
@@ -1065,6 +1066,18 @@
             totalAccumulatedSavings += savings;
             totalAccumulatedInvestment += investment;
 
+            simulationRowsData.push({
+                month: m,
+                start: startBalance,
+                income: income,
+                savings: savings,
+                investment: investment,
+                deductions: totalDeductions,
+                remaining: remaining,
+                accSavings: totalAccumulatedSavings,
+                accInvestment: totalAccumulatedInvestment
+            });
+
             let row = document.createElement('tr');
             row.innerHTML = `
                 <td>الشهر ${m}</td>
@@ -1082,7 +1095,7 @@
 
         renderAnalysisAndCharts(monthlyExpensesList);
         runDynamicAiEngine(monthlyExpensesList, totalAccumulatedSavings, totalAccumulatedInvestment);
-        runCustomPromptAiAnalysis(currentBalance, monthlyIncome, monthlyInvestment, totalAccumulatedSavings);
+        runCustomPromptAiAnalysis(currentBalance, monthlyIncome, monthlyInvestment, simulationMonths, simulationRowsData);
     }
 
     function renderOneTimeTable() {
@@ -1247,60 +1260,49 @@
         });
     }
 
-    function runCustomPromptAiAnalysis(balance, income, investment, savings) {
+    function runCustomPromptAiAnalysis(balance, income, investment, months, rows) {
         const container = document.getElementById('customAiPromptAnalysis');
         
-        let totalInstallmentsOriginal = installmentItems.reduce((s, i) => s + i.total, 0);
-        let totalInstallmentsAdjusted = installmentItems.reduce((s, i) => s + i.adjustedTotal, 0);
-        let totalOneTime = oneTimeItems.reduce((s, i) => s + i.total, 0);
-
         let missingInfo = [];
-        if (balance === 0) missingInfo.push("الرصيد الحالي غير محدد أو يساوي صفر.");
-        if (income === 0) missingInfo.push("الدخل الشهري غير محدد أو يساوي صفر.");
-        if (installmentItems.length === 0 && oneTimeItems.length === 0) missingInfo.push("لا توجد بنود مشتريات أو أقساط مسجلة.");
+        if (balance === 0) missingInfo.push("الرصيد الحالي غير مدخل أو يساوي صفر.");
+        if (income === 0) missingInfo.push("الدخل الشهري غير مدخل أو يساوي صفر.");
 
-        let installmentsHtml = installmentItems.length > 0 ? installmentItems.map(i => `
-            - السلعة: ${i.name}<br>
-            - طريقة الدفع: تقسيط (${i.count} دفعات)<br>
-            - القسط الشهري التقريبي: ${(i.adjustedTotal / ((i.endMonth - i.startMonth) + 1 || 1)).toFixed(2)} ر.س<br>
-            - المبلغ المتبقي (الفعلي): ${i.adjustedTotal.toFixed(2)} ر.س<br>
-            - عدد الدفعات: ${i.count} أشهر (من شهر ${i.startMonth} إلى ${i.endMonth})
+        let installmentsDetails = installmentItems.length > 0 ? installmentItems.map(i => `
+            - اسم الالتزام: ${i.name}<br>
+            - المبلغ الإجمالي: ${i.total.toFixed(2)} ر.س<br>
+            - المبلغ الفعلي بعد السداد المسبق: ${i.adjustedTotal.toFixed(2)} ر.س<br>
+            - عدد الدفعات: ${i.count}<br>
+            - القسط الشهري الفعلي: ${(i.adjustedTotal / ((i.endMonth - i.startMonth) + 1 || 1)).toFixed(2)} ر.س<br>
+            - نطاق الأشهر (من ${i.startMonth} إلى ${i.endMonth})
         `).join('<br><br>') : "لا توجد التزامات أقساط مسجلة.";
 
-        let oneTimeHtml = oneTimeItems.length > 0 ? oneTimeItems.map(i => `
-            - البند: ${i.name} | المبلغ: ${i.total.toFixed(2)} ر.س | شهر الخصم: ${i.targetMonth}
+        let oneTimeDetails = oneTimeItems.length > 0 ? oneTimeItems.map(i => `
+            - البند: ${i.name} | المبلغ: ${i.total.toFixed(2)} ر.س | يخصم في الشهر: ${i.targetMonth}
         `).join('<br>') : "لا توجد مشتريات فورية مسجلة.";
 
+        let simulationText = rows.map(r => `
+            الشهر ${r.month}: البداية (${r.start.toFixed(2)}) | الدخل (${r.income.toFixed(2)}) | التوفير (${r.savings.toFixed(2)}) | الاستثمار (${r.investment.toFixed(2)}) | الخصومات (${r.deductions.toFixed(2)}) | المتبقي (${r.remaining.toFixed(2)})
+        `).join('<br>');
+
         container.innerHTML = `
-            <strong>أنت محلل مالي يعمل على تحليل البيانات المالية للمستخدم.</strong><br><br>
-            <strong>مهمتك:</strong><br>
-            حلل البيانات التالية كما هي، ونظمها قبل إصدار أي استنتاج.<br><br>
-            <strong>بيانات المستخدم:</strong><br>
+            أنت محلل مالي ذكي ومحايد، ومهمتك تحليل البيانات المالية التي يوفرها نظام SmartWallet بدقة، اعتمادًا على البيانات الموجودة فقط.<br><br>
+            <strong>1. البيانات المالية الأساسية:</strong><br>
             - الرصيد الحالي: ${balance.toFixed(2)} ر.س<br>
             - الدخل الشهري: ${income.toFixed(2)} ر.س<br>
-            - الاستثمارات: ${investment.toFixed(2)} ر.س<br>
-            - التوفير: ${savings.toFixed(2)} ر.س<br><br>
-            <strong>الالتزامات الشهرية:</strong><br>
-            ${installmentsHtml}<br>
-            ${oneTimeHtml}<br><br>
-            <strong>إجمالي الالتزامات:</strong> ${totalInstallmentsAdjusted.toFixed(2)} ر.س<br><br>
-            <strong>قواعد التحليل:</strong><br>
-            1. اعتمد فقط على البيانات الموجودة.<br>
-            2. لا تخترع أي معلومة ناقصة.<br>
-            3. إذا كانت هناك معلومة مهمة غير موجودة، حددها بوضوح (${missingInfo.join(', ') || 'لا توجد'}).<br>
-            4. افصل بين الأرقام الفعلية والاستنتاجات.<br>
-            5. احسب النسب والفروقات عندما تكون البيانات كافية.<br>
-            6. حلل الالتزامات الشهرية وتأثيرها على السيولة.<br>
-            7. لا تقدم اقتراحات مبنية على افتراضات.<br>
-            8. لا تستخدم كلامًا تسويقيًا أو تحفيزيًا.<br>
-            9. إذا وجدت خطأ أو تناقضًا في البيانات، وضحه بدل تجاهله.<br>
-            10. اجعل النتيجة مختصرة ومنظمة وسهلة القراءة.<br><br>
-            <strong>المطلوب:</strong><br>
-            - ملخص الوضع المالي.<br>
-            - إجمالي الالتزامات الشهرية.<br>
-            - تأثير الأقساط والمشتريات على الدخل.<br>
-            - نقاط القوة والمشاكل أو المخاطر.<br>
-            - المعلومات الناقصة والاستنتاجات المباشرة.
+            - الاستثمار الشهري: ${investment.toFixed(2)} ر.س<br>
+            - عدد أشهر المحاكاة: ${months}<br><br>
+
+            <strong>2. جدول المحاكاة الشهرية:</strong><br>
+            ${simulationText}<br><br>
+
+            <strong>3. جدول التزامات التقسيط:</strong><br>
+            ${installmentsDetails}<br><br>
+
+            <strong>4. مشتريات المرة الواحدة:</strong><br>
+            ${oneTimeDetails}<br><br>
+
+            <strong>5. الملاحظات والبيانات الناقصة أو المتعارضة:</strong><br>
+            - ${missingInfo.length > 0 ? missingInfo.join("<br>- ") : "لا توجد بيانات ناقصة أو متعارضة جوهرية."}
         `;
     }
 
@@ -1345,11 +1347,9 @@
         const currentBalance = document.getElementById('currentBalance').value || 0;
         const monthlyIncome = document.getElementById('monthlyIncome').value || 0;
 
-        const promptText = `أنت محلل مالي يعمل على تحليل البيانات المالية للمستخدم.
-مهمتك: حلل البيانات التالية كما هي، ونظمها قبل إصدار أي استنتاج.
-- الرصيد الحالي: ${currentBalance}
-- الدخل الشهري: ${monthlyIncome}
-اعتمد فقط على البيانات الموجودة ولا تخترع أي معلومة ناقصة.`;
+        const promptText = `أنت محلل مالي ذكي ومحايد. قم بتحليل البيانات التالية بدقة ودون أي افتراضات أو كلام تحفيزي:
+        - الرصيد الحالي: ${currentBalance}
+        - الدخل الشهري: ${monthlyIncome}`;
 
         try {
             const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
