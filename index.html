@@ -719,20 +719,29 @@
                 </label>
             </div>
             
-            <div id="apiKeyContainer" style="display: none; background: #0f0c1b; padding: 20px; border-radius: 12px; border: 1px dashed var(--accent); margin-top: 10px;">
-                <div style="margin-bottom: 16px; padding: 15px; background: #141026; border: 1px solid var(--card-border); border-radius: 8px; line-height: 1.9;">
-                    <strong style="color: var(--accent); font-size: 1.05rem;">🔑 دليل الحصول على مفتاح Groq API وتفعيله خطوة بخطوة:</strong>
-                    <ol style="padding-right: 22px; margin-top: 8px; color: var(--text-main); font-size: 0.92rem;">
-                        <li><strong>الوصول إلى منصة المطورين:</strong> انتقل مباشرة إلى الموقع الرسمي عبر الرابط <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; font-weight: bold; text-decoration: underline;">Groq Console - API Keys</a>.</li>
-                        <li><strong>تسجيل الدخول أو إنشاء حساب:</strong> قم بتسجيل الدخول باستخدام حسابك (سواء عبر Google أو البريد الإلكتروني) لتتمكن من الوصول إلى لوحة تحكم المفاتيح.</li>
-                        <li><strong>توليد المفتاح الجديد:</strong> اضغط على زر <em>(Create API Key)</em> أو إنشاء مفتاح جديد، واكتب له سمية اختيارية (مثل: SmartWalletKey)، ثم قم بنسخ المفتاح الناتج فوراً.</li>
-                        <li><strong>اللصق والربط الآمن:</strong> ضع المفتاح المنسوخ في الحقل المخصص أدناه، ثم اضغط على زر <strong>"إرسال البيانات للذكاء الاصطناعي وتحليلها"</strong> لتفعيل التحليل الفوري.</li>
-                    </ol>
-                    <p style="margin-top: 10px; color: var(--warning); font-size: 0.85rem; background: rgba(245, 158, 11, 0.1); padding: 8px; border-radius: 6px;">
-                        ⚠️ <strong>تنبيه أمني هام:</strong> لا تشارك مفتاحك الخاص مع أي شخص، ولا تقم برفعه في مستودعات عامة أو ملفات مكشوفة حمايةً لحسابك وبياناتك.
-                    </p>
-                </div>
-                
+           <div id="apiKeyContainer" style="display: none; background: #0f0c1b; padding: 20px; border-radius: 12px; border: 1px dashed var(--accent); margin-top: 10px;">
+    <div style="margin-bottom: 16px; padding: 15px; background: #141026; border: 1px solid var(--card-border); border-radius: 8px; line-height: 1.9;">
+        <strong style="color: var(--accent); font-size: 1.05rem;">🔑 دليل الحصول على مفتاح Groq API وتفعيله خطوة بخطوة:</strong>
+        <ol style="padding-right: 22px; margin-top: 8px; color: var(--text-main); font-size: 0.92rem;">
+            <li><strong>الوصول إلى منصة المطورين:</strong> انتقل مباشرة إلى الموقع الرسمي عبر الرابط <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; font-weight: bold; text-decoration: underline;">Groq Console - API Keys</a>.</li>
+            <li><strong>تسجيل الدخول أو إنشاء حساب:</strong> قم بتسجيل الدخول باستخدام حسابك (سواء عبر Google أو البريد الإلكتروني) لتتمكن من الوصول إلى لوحة تحكم المفاتيح.</li>
+            <li><strong>توليد المفتاح الجديد:</strong> اضغط على زر <em>(Create API Key)</em> أو إنشاء مفتاح جديد، واكتب له سمية اختيارية (مثل: SmartWalletKey)، ثم قم بنسخ المفتاح الناتج فوراً.</li>
+            <li><strong>اللصق والربط الآمن:</strong> ضع المفتاح المنسوخ في الحقل المخصص أدناه، ثم اضغط على زر <strong>"إرسال البيانات للذكاء الاصطناعي وتحليلها"</strong> لتفعيل التحليل الفوري.</li>
+        </ol>
+        <p style="margin-top: 10px; color: var(--warning); font-size: 0.85rem; background: rgba(245, 158, 11, 0.1); padding: 8px; border-radius: 6px;">
+            ⚠️ <strong>تنبيه أمني هام:</strong> لا تشارك مفتاحك الخاص مع أي شخص، ولا تقم برفعه في مستودعات عامة أو ملفات مكشوفة حمايةً لحسابك وبياناتك.
+        </p>
+    </div>
+    
+    <label style="color: var(--text-main); margin-bottom: 6px; font-weight: bold;">أدخل مفتاح الربط الخاص بك:</label>
+    <input type="password" id="groqApiKey" placeholder="أدخل مفتاح Groq API Key هنا (يبدأ بـ gsk_...)" style="margin-bottom: 12px; padding: 12px; font-size: 1rem; background: #181427; border-color: var(--accent);">
+    <button type="button" class="btn-small btn-success" onclick="fetchGroqAiAnalysis()" style="width: auto; padding: 10px 20px; font-size: 0.95rem;">🚀 إرسال البيانات للذكاء الاصطناعي وتحليلها</button>
+    
+    <div id="aiApiResponseOutput" style="margin-top: 15px; padding: 12px; background: #120e1f; border: 1px solid var(--card-border); border-radius: 8px; font-size: 0.9rem; line-height: 1.6; display: none;">
+        <strong style="color: var(--accent);">رد الذكاء الاصطناعي (Groq AI):</strong>
+        <div id="aiResponseContent" style="margin-top: 8px; color: var(--text-main);"></div>
+    </div>
+</div>
                 <label style="color: var(--text-main); margin-bottom: 6px; font-weight: bold;">أدخل مفتاح الربط الخاص بك:</label>
                 <input type="password" id="groqApiKey" placeholder="أدخل مفتاح Groq API Key هنا (يبدأ بـ gsk_...)" style="margin-bottom: 12px; padding: 12px; font-size: 1rem; background: #181427; border-color: var(--accent);">
                 <button type="button" class="btn-small btn-success" onclick="fetchGroqAiAnalysis()" style="width: auto; padding: 10px 20px; font-size: 0.95rem;">🚀 إرسال البيانات للذكاء الاصطناعي وتحليلها</button>
@@ -784,19 +793,16 @@
             <div id="aiMicroProjects" class="project-card-grid"></div>
         </div>
 
-        <!-- التقرير المالي المحدث مع زر التحميل والنسخ الإضافي -->
         <div class="card full-width" style="border: 2px solid var(--info); margin-top: 25px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                 <h2 style="color: var(--info); margin-bottom: 0; border: none; padding: 0;">📋 التقرير المالي التحليلي حسب برومبت SmartWallet</h2>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button type="button" class="btn-small btn-success" onclick="copyAnalysisPrompt()" style="width: auto; padding: 8px 18px;">📋 نسخ البرومبت مع البيانات</button>
-                    <button type="button" class="btn-small" onclick="downloadAnalysisPromptFile()" style="width: auto; padding: 8px 18px; background-color: var(--warning); color: #0f0c1b;">📥 تحميل برومبت كامل للصفحة</button>
-                </div>
+                <button type="button" class="btn-small btn-success" onclick="copyAnalysisPrompt()" style="width: auto; padding: 8px 18px;">📋 نسخ البرومبت مع البيانات</button>
             </div>
             
             <div style="background: #120e1f; padding: 12px 15px; border-radius: 8px; border: 1px dashed var(--info); margin-bottom: 15px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
                 ⚠️ <strong>ملاحظة هامة:</strong> يجب تفعيل وإدخال مفتاح <strong>API</strong> (عبر إعدادات المحرك أعلاه) لكي يعمل تحليل التقرير بالذكاء الاصطناعي بشكل كامل وسليم.<br>
-                💡 <strong>ماذا تفعل بعد النسخ أو التحميل؟</strong> خذ هذا البرومبت الجاهز مع بياناتك الحالية وضعه في أي ذكاء اصطناعي (مثل ChatGPT) لتكمل دراسة وضعك المالي بدقة وحيادية تامة.
+                💡 <strong>ماذا تفعل بعد النسخ؟</strong> 
+                خذ هذا البرومبت الجاهز مع بياناتك الحالية وضعه في أي ذكاء اصطناعي (مثل ChatGPT) لتكمل دراسة وضعك المالي بدقة وحيادية تامة.
             </div>
 
             <div id="customAiPromptAnalysis" style="background: #120e1f; padding: 18px; border-radius: 8px; font-size: 0.92rem; line-height: 1.8; color: var(--text-main);">
@@ -1320,17 +1326,6 @@
         }).catch(err => {
             alert('فشل نسخ النص، يرجى المحاولة يدوياً.');
         });
-    }
-
-    function downloadAnalysisPromptFile() {
-        const promptText = document.getElementById('customAiPromptAnalysis').innerText;
-        const blob = new Blob([promptText], { type: 'text/plain;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'SmartWallet_Analysis_Prompt.txt';
-        a.click();
-        URL.revokeObjectURL(url);
     }
 
     function exportDataToFile() {
