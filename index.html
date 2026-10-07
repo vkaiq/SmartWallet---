@@ -784,6 +784,7 @@
             <div id="aiMicroProjects" class="project-card-grid"></div>
         </div>
 
+        <!-- التقرير المالي المحدث المرتبط بشرط تفعيل واستهلاك الـ API -->
         <div class="card full-width" style="border: 2px solid var(--info); margin-top: 25px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                 <h2 style="color: var(--info); margin-bottom: 0; border: none; padding: 0;">📋 التقرير المالي التحليلي حسب برومبت SmartWallet</h2>
@@ -791,13 +792,14 @@
             </div>
             
             <div style="background: #120e1f; padding: 12px 15px; border-radius: 8px; border: 1px dashed var(--info); margin-bottom: 15px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
-                ⚠️ <strong>ملاحظة هامة:</strong> يجب تفعيل وإدخال مفتاح <strong>API</strong> (عبر إعدادات المحرك أعلاه) لكي يعمل تحليل التقرير بالذكاء الاصطناعي بشكل كامل وسليم.<br>
+                ⚠️ <strong>تنبيه هامة جداً:</strong> التحليل المتقدم للتقرير متاح <u>فقط</u> بعد تفعيل وضع <strong>Groq AI API</strong> وإدخال مفتاح API صالح بنجاح في إعدادات المحرك أعلاه.<br>
+                إذا لم يتم تفعيل الـ API أو كان غير متصل، فلا يمكن تنفيذ التحليل أو إظهار نتائج وهمية.<br>
                 💡 <strong>ماذا تفعل بعد النسخ؟</strong> 
-                خذ هذا البرومبت الجاهز مع بياناتك الحالية وضعه في أي ذكاء اصطناعي (مثل ChatGPT) لتكمل دراسة وضعك المالي بدقة وحيادية تامة.
+                يمكنك نسخ البرومبت والبيانات الحالية ولصقها في أي ذكاء اصطناعي (مثل ChatGPT) لتكمل دراسة وضعك المالي بدقة.
             </div>
 
             <div id="customAiPromptAnalysis" style="background: #120e1f; padding: 18px; border-radius: 8px; font-size: 0.92rem; line-height: 1.8; color: var(--text-main);">
-                جاري معالجة وتحليل البيانات المالية...
+                ⚠️ تنبيه: تشغيل Groq AI API وإدخال مفتاح API صالح شرط أساسي لاستخدام التحليل المتقدم وعرض التقرير المالي الشامل هنا. يرجى تفعيل الـ API من إعدادات المحرك أعلاه.
             </div>
         </div>
 
@@ -1106,7 +1108,7 @@
 
         renderAnalysisAndCharts(monthlyExpensesList);
         runDynamicAiEngine(monthlyExpensesList, totalAccumulatedSavings, totalAccumulatedInvestment);
-        runCustomPromptAiAnalysis(currentBalance, monthlyIncome, monthlyInvestment, simulationMonths, simulationRowsData);
+        // التقرير المالي هنا سيعرض البيانات فقط عند نجاح أو توفر البيانات، بينما التحليل المتقدم مقيد بالـ API
     }
 
     function renderOneTimeTable() {
@@ -1271,55 +1273,49 @@
         });
     }
 
-    function runCustomPromptAiAnalysis(balance, income, investment, months, rows) {
-        const container = document.getElementById('customAiPromptAnalysis');
-        
+    function copyAnalysisPrompt() {
+        const currentBalance = parseFloat(document.getElementById('currentBalance').value) || 0;
+        const monthlyIncome = parseFloat(document.getElementById('monthlyIncome').value) || 0;
+        const monthlyInvestment = parseFloat(document.getElementById('monthlyInvestment').value) || 0;
+        const simulationMonths = parseInt(document.getElementById('simulationMonths').value) || 6;
+
         let missingInfo = [];
-        if (balance === 0) missingInfo.push("الرصيد الحالي غير مدخل أو يساوي صفر.");
-        if (income === 0) missingInfo.push("الدخل الشهري غير مدخل أو يساوي صفر.");
+        if (currentBalance === 0) missingInfo.push("الرصيد الحالي غير مدخل أو يساوي صفر.");
+        if (monthlyIncome === 0) missingInfo.push("الدخل الشهري غير مدخل أو يساوي صفر.");
 
         let installmentsDetails = installmentItems.length > 0 ? installmentItems.map(i => `
-            - اسم الالتزام: ${i.name}<br>
-            - المبلغ الإجمالي: ${i.total.toFixed(2)} ر.س<br>
-            - المبلغ الفعلي بعد السداد المسبق: ${i.adjustedTotal.toFixed(2)} ر.س<br>
-            - عدد الدفعات: ${i.count}<br>
-            - القسط الشهري الفعلي: ${(i.adjustedTotal / ((i.endMonth - i.startMonth) + 1 || 1)).toFixed(2)} ر.س<br>
+            - اسم الالتزام: ${i.name}
+            - المبلغ الإجمالي: ${i.total.toFixed(2)} ر.س
+            - المبلغ الفعلي بعد السداد المسبق: ${i.adjustedTotal.toFixed(2)} ر.س
+            - عدد الدفعات: ${i.count}
             - نطاق الأشهر (من ${i.startMonth} إلى ${i.endMonth})
-        `).join('<br><br>') : "لا توجد التزامات أقساط مسجلة.";
+        `).join('\n') : "لا توجد التزامات أقساط مسجلة.";
 
         let oneTimeDetails = oneTimeItems.length > 0 ? oneTimeItems.map(i => `
             - البند: ${i.name} | المبلغ: ${i.total.toFixed(2)} ر.س | يخصم في الشهر: ${i.targetMonth}
-        `).join('<br>') : "لا توجد مشتريات فورية مسجلة.";
+        `).join('\n') : "لا توجد مشتريات فورية مسجلة.";
 
-        let simulationText = rows.map(r => `
-            الشهر ${r.month}: البداية (${r.start.toFixed(2)}) | الدخل (${r.income.toFixed(2)}) | التوفير (${r.savings.toFixed(2)}) | الاستثمار (${r.investment.toFixed(2)}) | الخصومات (${r.deductions.toFixed(2)}) | المتبقي (${r.remaining.toFixed(2)})
-        `).join('<br>');
+        let promptPayload = `
+أنت محلل مالي ذكي ومحايد، ومهمتك تحليل البيانات المالية التي يوفرها نظام SmartWallet بدقة، اعتمادًا على البيانات الموجودة فقط.
+لا تفترض أي معلومات غير موجودة، ولا تخترع أرقامًا أو مصاريف أو التزامات. إذا كانت هناك بيانات ناقصة أو متعارضة، وضّح ذلك بوضوح قبل بناء أي استنتاج عليها.
 
-        container.innerHTML = `
-            أنت محلل مالي ذكي ومحايد، ومهمتك تحليل البيانات المالية التي يوفرها نظام SmartWallet بدقة، اعتمادًا على البيانات الموجودة فقط.<br><br>
-            <strong>1. البيانات المالية الأساسية:</strong><br>
-            - الرصيد الحالي: ${balance.toFixed(2)} ر.س<br>
-            - الدخل الشهري: ${income.toFixed(2)} ر.س<br>
-            - الاستثمار الشهري: ${investment.toFixed(2)} ر.س<br>
-            - عدد أشهر المحاكاة: ${months}<br><br>
+1. البيانات المالية الأساسية:
+- الرصيد الحالي: ${currentBalance.toFixed(2)} ر.س
+- الدخل الشهري المتكرر: ${monthlyIncome.toFixed(2)} ر.س
+- مبلغ الاستثمار الشهري: ${monthlyInvestment.toFixed(2)} ر.س
+- عدد أشهر المحاكاة: ${simulationMonths}
 
-            <strong>2. جدول المحاكاة الشهرية:</strong><br>
-            ${simulationText}<br><br>
+2. جدول التزامات التقسيط:
+${installmentsDetails}
 
-            <strong>3. جدول التزامات التقسيط:</strong><br>
-            ${installmentsDetails}<br><br>
+3. جدول مشتريات المرة الواحدة:
+${oneTimeDetails}
 
-            <strong>4. مشتريات المرة الواحدة:</strong><br>
-            ${oneTimeDetails}<br><br>
+4. البيانات الناقصة أو المتعارضة:
+- ${missingInfo.length > 0 ? missingInfo.join(" | ") : "لا توجد بيانات ناقصة أو متعارضة جوهرية."}
+        `.trim();
 
-            <strong>5. الملاحظات والبيانات الناقصة أو المتعارضة:</strong><br>
-            - ${missingInfo.length > 0 ? missingInfo.join("<br>- ") : "لا توجد بيانات ناقصة أو متعارضة جوهرية."}
-        `;
-    }
-
-    function copyAnalysisPrompt() {
-        const promptText = document.getElementById('customAiPromptAnalysis').innerText;
-        navigator.clipboard.writeText(promptText).then(() => {
+        navigator.clipboard.writeText(promptPayload).then(() => {
             alert('✅ تم نسخ البرومبت والبيانات المالية بنجاح! يمكنك الآن لصقها في أي ذكاء اصطناعي (مثل ChatGPT) لمتابعة الدراسة والتحليل.');
         }).catch(err => {
             alert('فشل نسخ النص، يرجى المحاولة يدوياً.');
@@ -1391,11 +1387,14 @@
         const apiKey = document.getElementById('groqApiKey').value.trim();
         const apiOutput = document.getElementById('aiApiResponseOutput');
         const responseContent = document.getElementById('aiResponseContent');
+        const customPromptContainer = document.getElementById('customAiPromptAnalysis');
 
-        // الشرط الأساسي: التحقق من تفعيل وضع API وإدخال المفتاح
+        // الشرط الأساسي الصارم: التحقق من تفعيل وضع API وإدخال المفتاح
         const apiModeChecked = document.querySelector('input[name="aiMode"][value="api"]').checked;
         if (!apiModeChecked || !apiKey) {
-            alert('⚠️ تنبيه هام: يجب أولاً تفعيل خيار "تفعيل اتصال Groq AI API" وإدخال مفتاح API صالح في قسم الإعدادات أعلاه لإتمام هذا التحليل المتقدم.');
+            const warningMsg = '⚠️ تنبيه: تشغيل Groq AI API وإدخال مفتاح API صالح شرط أساسي لاستخدام التحليل المتقدم. لا يمكن إظهار النتيجة حتى ينجح الاتصال الفعلي بالـ API.';
+            alert(warningMsg);
+            customPromptContainer.innerHTML = `<span style="color: var(--danger); font-weight: bold;">${warningMsg}</span>`;
             document.querySelector('input[name="aiMode"][value="api"]').checked = true;
             toggleAiMode();
             document.getElementById('groqApiKey').focus();
@@ -1406,6 +1405,7 @@
         responseContent.style.color = 'var(--text-main)';
         responseContent.style.whiteSpace = 'pre-wrap';
         responseContent.textContent = '⏳ جاري جمع بيانات SmartWallet وإرسالها إلى Groq AI لتحليلها بشكل شامل...';
+        customPromptContainer.innerHTML = '⏳ جاري الاتصال الفعلي بـ Groq AI API واستلام التقرير المالي الشامل...';
 
         // جمع كافة بيانات النظام الحالية ديناميكياً وقت الضغط على الزر
         const currentBalance = parseFloat(document.getElementById('currentBalance').value) || 0;
@@ -1417,12 +1417,10 @@
         let oneTimeData = oneTimeItems.map(i => `- ${i.name}: ${i.total} ر.س (يخصم في شهر ${i.targetMonth})`).join('\n') || 'لا توجد مشتريات فورية.';
         let installmentData = installmentItems.map(i => `- ${i.name}: الإجمالي ${i.total} ر.س، الفعلي بعد السداد المسبق ${i.adjustedTotal} ر.س، من شهر ${i.startMonth} إلى ${i.endMonth}`).join('\n') || 'لا توجد التزامات أقساط.';
 
-        // إعادة توليد صفوف المحاكاة الحالية لإرسالها
         let runningBalance = currentBalance;
         let simRows = [];
         let totalAccSavings = 0;
         let totalAccInv = 0;
-        let monthlyExpList = [];
 
         for (let m = 1; m <= simulationMonths; m++) {
             let startB = runningBalance;
@@ -1439,7 +1437,6 @@
                 }
             });
             let ded = mOneTime + mInst;
-            monthlyExpList.push(ded);
             let rem = startB + inc - sav - inv - ded;
             runningBalance = rem;
             totalAccSavings += sav;
@@ -1448,11 +1445,10 @@
             simRows.push(`الشهر ${m}: رصيد البداية=${startB.toFixed(2)}، الدخل=${inc.toFixed(2)}، التوفير=${sav.toFixed(2)}، الاستثمار=${inv.toFixed(2)}، الخصومات=${ded.toFixed(2)}، المتبقي=${rem.toFixed(2)}، إجمالي التوفير=${totalAccSavings.toFixed(2)}، إجمالي الاستثمار=${totalAccInv.toFixed(2)}`);
         }
 
-        // بناء الطلب: أولاً جميع بيانات SmartWallet، ثم في الأسفل البرومبت الكامل وتعليمات التحليل
         const smartWalletDataPayload = `
 [جميع بيانات SmartWallet الحالية للمستخدم]:
 1. الرصيد الحالي والسيولة الحالية: ${currentBalance.toFixed(2)} ر.س
-2. الدخل الشهري: ${monthlyIncome.divider ? '' : monthlyIncome.toFixed(2)} ر.س
+2. الدخل الشهري: ${monthlyIncome.toFixed(2)} ر.س
 3. الاستثمار الشهري: ${monthlyInvestment.toFixed(2)} ر.س
 4. قواعد التوفير: ${savingsRulesData}
 5. مشتريات المرة الواحدة:
@@ -1474,13 +1470,11 @@ ${simRows.join('\n')}
 - ملخص الوضع المالي الحالي ومستوى السيولة.
 - تحليل التدفق النقدي شهرًا بشهر (الأشهر الأعلى ضغطًا ماليًا والأشهر الأفضل).
 - إجمالي الالتزامات مع التفريق بين الإجمالي والقسط الشهري وتأثير الأقساط على الأشهر القادمة.
-- تأثير مشتريات المرة الواحدة.
-- تأثير التوفير والاستثمار على السيولة المتاحة.
+- تأثير مشتريات المرة الواحدة وتأثير التوفير والاستثمار.
 - اتجاه المصروفات وهل الوضع يتحسن أم يتراجع.
 - نقاط القوة والمشكلات أو المخاطر المالية الظاهرة من البيانات.
 - توصيات عملية ومبنية حصرياً على الأرقام الفعلية، مرتبة حسب الأولوية.
-- مشاريع رقمية مصغرة مقترحة فقط إذا كان الوضع المالي والفائض يسمحان بذلك دون افتراضات.
-الهدف الأساسي: إعطاء تحليل مالي دقيق مبني على بيانات SmartWallet الفعلية، مع فهم التسلسل الزمني للسيولة والالتزامات، وليس مجرد جمع الأرقام وإصدار حكم عام.
+الهدف الأساسي: إعطاء تحليل مالي دقيق مبني على بيانات SmartWallet الفعلية، مع فهم التسلسل الزمني للسيولة والالتزامات.
         `.trim();
 
         const finalPromptForGroq = `${smartWalletDataPayload}\n\n${analysisInstructionsPrompt}`;
@@ -1518,9 +1512,13 @@ ${simRows.join('\n')}
             }
 
             responseContent.textContent = text;
+            customPromptContainer.style.whiteSpace = 'pre-wrap';
+            customPromptContainer.textContent = text; // عرض النتيجة الحقيقية المسترجعة من Groq في قسم التقرير المالي
         } catch (error) {
+            const errMessage = `حدث خطأ في الاتصال الفعلي بالـ API: ${error.message}`;
             responseContent.style.color = 'var(--danger)';
-            responseContent.textContent = `حدث خطأ في الاتصال: ${error.message}`;
+            responseContent.textContent = errMessage;
+            customPromptContainer.innerHTML = `<span style="color: var(--danger); font-weight: bold;">${errMessage}</span>`;
         }
     }
 
